@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <parent>
+		<groupId>org.gs4tr</groupId>
+		<artifactId>gs4tr</artifactId>
+		<version>10</version>
+	</parent>
+	
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.gs4tr.gcc</groupId>
+  <artifactId>gcc-restclient</artifactId>
+  <version>1.0.0</version>
+  <packaging>bundle</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <scm>
+	<connection>scm:svn:${development.server}/products/connect/gcc-apps/gcc-restclient-java/tags/gcc-restclient-1.0.0</connection>
+	<developerConnection>scm:svn:${development.server}/products/connect/gcc-apps/gcc-restclient-java/tags/gcc-restclient-1.0.0</developerConnection>
+  </scm>
+  
+  <dependencies>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.9.5</version>
+	</dependency>
+  </dependencies>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<_nouses>true</_nouses>
+						<Bundle-Version>${version}-${maven.build.timestamp}</Bundle-Version>
+						<Bundle-Vendor>GS4TR</Bundle-Vendor>
+						<Bundle-ClassPath>.</Bundle-ClassPath>
+						<Bundle-Localization>plugin</Bundle-Localization>
+						<Bundle-Name>GCC Rest Services Client Plug-in</Bundle-Name>
+						<Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+						<Bundle-SymbolicName>org.gs4tr.gcc.restclient</Bundle-SymbolicName>
+						<Eclipse-LazyStart>false</Eclipse-LazyStart>
+						<Import-Package>*
+						</Import-Package>
+						<Export-Package>org.gs4tr.gcc.restclient,
+						org.gs4tr.gcc.restclient.util,
+						org.gs4tr.gcc.restclient.request,
+						org.gs4tr.gcc.restclient.response,
+						org.gs4tr.gcc.restclient.dto,
+						org.gs4tr.gcc.restclient.model
+						</Export-Package>
+					</instructions>
+				</configuration>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>	
+			</plugins>
+			</build>
+
+</project>
