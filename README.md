@@ -1,4 +1,4 @@
-# GlobalLink Connect Java SDK
+# GlobalLink Connect Cloud Java SDK
 
 [![GitHub version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=1.0.0&x2=0)](https://github.com/translations-com/globallink-connect-cloud-api-java)
 
