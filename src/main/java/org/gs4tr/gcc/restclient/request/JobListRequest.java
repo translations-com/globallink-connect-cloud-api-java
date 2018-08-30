@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobListRequest extends PageableRequest {
 
-    @JsonProperty("status")
+    @JsonProperty("state")
     private String[] jobStatuses;
     @JsonProperty("job_id")
     private Long jobId;

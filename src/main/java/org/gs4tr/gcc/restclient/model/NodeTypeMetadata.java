@@ -10,6 +10,8 @@ public class NodeTypeMetadata {
     private PdClassifier pdClassifier;
     @JsonProperty("icon_url")
     private String iconUrl;
+    @JsonProperty("default_extension")
+    private String defaultExtension;
 
     public NodeTypeMetadata() {
 
@@ -37,6 +39,14 @@ public class NodeTypeMetadata {
 
     public void setIconUrl(String iconUrl) {
 	this.iconUrl = iconUrl;
+    }
+
+    public String getDefaultExtension() {
+	return defaultExtension;
+    }
+
+    public void setDefaultExtension(String defaultExtension) {
+	this.defaultExtension = defaultExtension;
     }
 
 }

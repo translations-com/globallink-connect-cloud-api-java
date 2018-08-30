@@ -41,7 +41,7 @@ public class MultipartUtility {
         URL url = new URL(requestURL);
         httpConn = (HttpsURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
-        httpConn.setRequestProperty("client_secret_key", config.getClientSecretKey());
+        httpConn.setRequestProperty("connector_key", config.getConnectorKey());
         httpConn.setRequestProperty("Authorization", "Bearer " + config.getBearerToken());
         httpConn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
         httpConn.setUseCaches(false);

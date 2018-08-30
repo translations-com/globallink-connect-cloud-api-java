@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GCTask {
-    @JsonProperty("job_id")
-    private Long jobId;
+    @JsonProperty("submission_id")
+    private Long submissionId;
     @JsonProperty("task_id")
     private Long taskId;
     @JsonProperty("node_id")
@@ -25,17 +25,17 @@ public class GCTask {
     private Locale targetLocale;
     @JsonProperty("last_updated")
     private Date lastUpdated;
-    
+
     public GCTask() {
 
     }
 
-    public Long getJobId() {
-	return jobId;
+    public Long getSubmissionId() {
+	return submissionId;
     }
 
-    public void setJobId(Long jobId) {
-	this.jobId = jobId;
+    public void setSubmissionId(Long submissionId) {
+	this.submissionId = submissionId;
     }
 
     public Long getTaskId() {

@@ -5,7 +5,7 @@ public class GCConfig {
     private String apiUrl;
     private String userName;
     private String password;
-    private String clientSecretKey;
+    private String connectorKey;
     private String userAgent;
 
     private String bearerToken;
@@ -14,15 +14,19 @@ public class GCConfig {
 
     }
 
-    public GCConfig(String apiUrl, String userName, String password, String clientSecretKey) {
+    public GCConfig(String apiUrl, String userName, String password) {
 	this.apiUrl = apiUrl;
 	this.userName = userName;
 	this.password = password;
-	this.clientSecretKey = clientSecretKey;
     }
 
-    public GCConfig(String apiUrl, String userName, String password, String clientSecretKey, String userAgent) {
-	this(apiUrl, userName, password, clientSecretKey);
+    public GCConfig(String apiUrl, String userName, String password, String connectorKey) {
+	this(apiUrl, userName, password);
+	this.connectorKey = connectorKey;
+    }
+
+    public GCConfig(String apiUrl, String userName, String password, String connectorKey, String userAgent) {
+	this(apiUrl, userName, password, connectorKey);
 	this.userAgent = userAgent;
     }
 
@@ -50,14 +54,6 @@ public class GCConfig {
 	this.password = password;
     }
 
-    public String getClientSecretKey() {
-	return clientSecretKey;
-    }
-
-    public void setClientSecretKey(String clientSecretKey) {
-	this.clientSecretKey = clientSecretKey;
-    }
-
     public String getUserAgent() {
 	return userAgent;
     }
@@ -72,6 +68,14 @@ public class GCConfig {
 
     public void setBearerToken(String bearerToken) {
 	this.bearerToken = bearerToken;
+    }
+
+    public String getConnectorKey() {
+	return connectorKey;
+    }
+
+    public void setConnectorKey(String connectorKey) {
+	this.connectorKey = connectorKey;
     }
 
 }

@@ -16,7 +16,7 @@ public class LocaleConfig {
     @JsonProperty("is_source")
     private Boolean isSource;
     @JsonProperty("target_rules")
-    private List<Map<String, Map<String, Object>>> targetRules;
+    private List<Map<String, String>> targetRules;
     @JsonProperty("post_processing")
     private List<Map<String, Object>> postProcessing;
 
@@ -56,11 +56,11 @@ public class LocaleConfig {
 	this.isSource = isSource;
     }
 
-    public List<Map<String, Map<String, Object>>> getTargetRules() {
+    public List<Map<String, String>> getTargetRules() {
 	return targetRules;
     }
 
-    public void setTargetRules(List<Map<String, Map<String, Object>>> targetRules) {
+    public void setTargetRules(List<Map<String, String>> targetRules) {
 	this.targetRules = targetRules;
     }
 

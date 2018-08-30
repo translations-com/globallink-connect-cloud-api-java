@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UploadFileContextRequest extends GCRequest {
 
+    private String name;
     @JsonProperty("type")
     private ContextType contextType;
     @JsonProperty("preview_file")
@@ -23,7 +24,7 @@ public class UploadFileContextRequest extends GCRequest {
     private String uniqueId;
 
     public enum ContextType {
-	HTML, HTML_ZIP, KEYWORD
+	HTML, ZIP, XSLT
     }
 
     public UploadFileContextRequest(String filePath, ContextType contextType) throws IOException {
@@ -36,6 +37,7 @@ public class UploadFileContextRequest extends GCRequest {
 	}
 	this.contents = Files.readAllBytes(Paths.get(filePath));
 	this.contextType = contextType;
+	this.name = file.getName();
     }
 
     public UploadFileContextRequest(byte[] contents, ContextType contextType) {
@@ -47,6 +49,7 @@ public class UploadFileContextRequest extends GCRequest {
 	    throw new IllegalArgumentException("Context type is required");
 	}
 	this.contextType = contextType;
+	this.name = "unknown."+contextType.name().toLowerCase();
     }
 
     public UploadFileContextRequest(String filePath, ContextType contextType, String htmlFileName, String uniqueId)
@@ -65,8 +68,9 @@ public class UploadFileContextRequest extends GCRequest {
     public Map<String, Object> getParameters() {
 	Map<String, Object> parameters = new HashMap<String, Object>();
 	parameters.putAll(super.getParameters());
-	parameters.put("type", this.contextType.name());
+	//parameters.put("type", this.contextType.name());
 	parameters.put("preview_file", this.contents);
+	parameters.put("ignore_file_name", this.name);
 	if (!StringUtils.isNullOrEmpty(this.htmlFileName)) {
 	    parameters.put("html_file_name", this.htmlFileName);
 	}

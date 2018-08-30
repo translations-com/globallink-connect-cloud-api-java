@@ -8,6 +8,8 @@ public class ClassifierPattern {
     private String classifierValue;
     @JsonProperty("regex_pattern")
     private String regexPattern;
+    @JsonProperty("cd_rule_file_path")
+    private String cdRuleFilePath;
 
     public ClassifierPattern() {
 
@@ -27,6 +29,14 @@ public class ClassifierPattern {
 
     public void setRegexPattern(String regexPattern) {
 	this.regexPattern = regexPattern;
+    }
+
+    public String getCdRuleFilePath() {
+	return cdRuleFilePath;
+    }
+
+    public void setCdRuleFilePath(String cdRuleFilePath) {
+	this.cdRuleFilePath = cdRuleFilePath;
     }
 
 }

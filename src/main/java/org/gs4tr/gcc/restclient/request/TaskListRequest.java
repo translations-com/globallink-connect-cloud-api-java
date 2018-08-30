@@ -10,8 +10,8 @@ public class TaskListRequest extends PageableRequest {
     private String[] statuses;
     @JsonProperty("locale")
     private String locale;
-    @JsonProperty("job_id")
-    private Long jobId;
+    @JsonProperty("submission_id")
+    private Long submissionId;
     @JsonProperty("unique_identifiers")
     private String[] uniqueIdentifiers;
     @JsonProperty("node_ids")
@@ -21,17 +21,17 @@ public class TaskListRequest extends PageableRequest {
 
     }
 
-    public TaskListRequest(TaskStatus[] statuses, String locale, Long jobId, String[] uniqueIdentifiers,
+    public TaskListRequest(TaskStatus[] statuses, String locale, Long submissionId, String[] uniqueIdentifiers,
 	    String[] nodeIds) {
 	setTaskStatuses(statuses);
 	this.locale = locale;
-	this.jobId = jobId;
+	this.submissionId = submissionId;
 	this.uniqueIdentifiers = uniqueIdentifiers;
 	this.nodeIds = nodeIds;
     }
 
     @JsonProperty("state")
-    public String[] getTaskStatuses() {
+    public String[] getStatuses() {
 	return statuses;
     }
 
@@ -59,12 +59,12 @@ public class TaskListRequest extends PageableRequest {
 	this.locale = locale;
     }
 
-    public Long getJobId() {
-	return jobId;
+    public Long getSubmissionId() {
+	return submissionId;
     }
 
-    public void setJobId(Long jobId) {
-	this.jobId = jobId;
+    public void setSubmissionId(Long submissionId) {
+	this.submissionId = submissionId;
     }
 
     public String[] getUniqueIdentifiers() {

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GCLanguageJob {
 
+    @JsonProperty("job_id")
+    private Long jobId;
     @JsonProperty("state")
     private GCJobState state;
     @JsonProperty("created_at")
@@ -49,6 +51,14 @@ public class GCLanguageJob {
 
     public void setTargetLocale(Locale targetLocale) {
 	this.targetLocale = targetLocale;
+    }
+
+    public Long getJobId() {
+	return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+	this.jobId = jobId;
     }
 
 }

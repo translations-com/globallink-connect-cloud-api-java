@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GCFile {
     @JsonProperty("_id")
     private String id;
-    @JsonProperty("node_id")
-    private String nodeId;
     @JsonProperty("connector_instance_id")
     private long connectorInstanceId;
     @JsonProperty("submitter")
@@ -33,8 +31,8 @@ public class GCFile {
     private String nodeMetadata;
     @JsonProperty("file_type")
     private String fileType;
-    @JsonProperty("file_id")
-    private String fileId;
+    @JsonProperty("content_id")
+    private String contentId;
     @JsonProperty("unique_identifier")
     private String uniqueIdentifier;
     @JsonProperty("public_preview_url")
@@ -58,14 +56,6 @@ public class GCFile {
 
     public void setId(String id) {
 	this.id = id;
-    }
-
-    public String getNodeId() {
-	return nodeId;
-    }
-
-    public void setNodeId(String nodeId) {
-	this.nodeId = nodeId;
     }
 
     public long getConnectorInstanceId() {
@@ -212,12 +202,12 @@ public class GCFile {
 	this.fileType = fileType;
     }
 
-    public String getFileId() {
-	return fileId;
+    public String getContentId() {
+        return contentId;
     }
 
-    public void setFileId(String fileId) {
-	this.fileId = fileId;
+    public void setContentId(String contentId) {
+        this.contentId = contentId;
     }
 
 }
