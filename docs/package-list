@@ -1,0 +1,6 @@
+org.gs4tr.gcc.restclient
+org.gs4tr.gcc.restclient.dto
+org.gs4tr.gcc.restclient.model
+org.gs4tr.gcc.restclient.operation
+org.gs4tr.gcc.restclient.request
+org.gs4tr.gcc.restclient.util
