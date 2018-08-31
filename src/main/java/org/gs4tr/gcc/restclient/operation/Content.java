@@ -19,6 +19,11 @@ public class Content extends GCOperation {
 	super(config);
 	request = null;
     }
+    
+    public Content(GCConfig config, PageableRequest request) {
+	super(config);
+	this.request = request;
+    }
 
     public Content(GCConfig config, Long pageNumber, Long pageSize) {
 	super(config);

@@ -6,6 +6,7 @@ import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.dto.PageableResponseData;
 import org.gs4tr.gcc.restclient.model.GCTask;
+import org.gs4tr.gcc.restclient.operation.Tasks.TasksResponse;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 import org.gs4tr.gcc.restclient.request.JobRequest;
 
@@ -40,7 +41,7 @@ public class JobTasks extends GCOperation {
 
     @Override
     public Class<? extends GCResponse> getResponseClass() {
-	return JobTasksResponse.class;
+	return TasksResponse.class;
     }
 
     public JobRequest getRequest() {

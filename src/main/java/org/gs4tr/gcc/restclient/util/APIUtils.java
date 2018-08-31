@@ -5,33 +5,17 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.dto.PageableResponseData;
-import org.gs4tr.gcc.restclient.model.Connector;
 import org.gs4tr.gcc.restclient.operation.Connectors;
-import org.gs4tr.gcc.restclient.operation.Connectors.ConnectorsResponse;
-import org.gs4tr.gcc.restclient.operation.ConnectorsConfig;
-import org.gs4tr.gcc.restclient.operation.ConnectorsConfig.ConnectorsConfigResponse;
-import org.gs4tr.gcc.restclient.operation.ConnectorsConfig.ConnectorsConfigResponseData;
-import org.gs4tr.gcc.restclient.operation.Content;
-import org.gs4tr.gcc.restclient.operation.Content.ContentResponse;
-import org.gs4tr.gcc.restclient.operation.Content.ContentResponseData;
-import org.gs4tr.gcc.restclient.operation.ContentData;
-import org.gs4tr.gcc.restclient.operation.ContentData.ContentDataResponse;
-import org.gs4tr.gcc.restclient.operation.ContentReference;
-import org.gs4tr.gcc.restclient.operation.ContentReference.ContentReferenceResponse;
 import org.gs4tr.gcc.restclient.operation.GCOperation;
 import org.gs4tr.gcc.restclient.operation.SessionStart;
-import org.gs4tr.gcc.restclient.operation.SessionStart.SessionStartResponse;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 import org.w3c.dom.DOMException;
 
@@ -121,7 +105,7 @@ public class APIUtils {
 	}
     }
 
-    public static InputStream doDownload(GCOperation operation) throws IOException {
+    public static InputStream doDownload(GCOperation operation) {
 	ObjectMapper mapper = new ObjectMapper();
 	try {
 	    URL url = operation.getRequestUrl();

@@ -10,6 +10,10 @@ public class PageableResponseData {
     @JsonProperty("total_result_pages_count")
     private Integer totalResultPagesCount;
     
+    public Boolean isEmpty(){
+	return totalRecordsCount==null || totalRecordsCount<1;
+    }
+    
     public Integer getCurrentPageNumber() {
 	return currentPageNumber;
     }

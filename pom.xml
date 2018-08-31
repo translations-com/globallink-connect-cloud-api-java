@@ -76,7 +76,7 @@
           </execution>
         </executions>
       </plugin>
-      <!--<plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
@@ -94,7 +94,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>-->
+      </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
@@ -114,7 +114,7 @@
             <Export-Package>org.gs4tr.gcc.restclient,
 						org.gs4tr.gcc.restclient.util,
 						org.gs4tr.gcc.restclient.request,
-						org.gs4tr.gcc.restclient.response,
+						org.gs4tr.gcc.restclient.operation,
 						org.gs4tr.gcc.restclient.dto,
 						org.gs4tr.gcc.restclient.model
 						</Export-Package>
