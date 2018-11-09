@@ -29,7 +29,7 @@ public abstract class GCOperation {
     public abstract String getRequestMethod();
 
     public URL getRequestUrl() throws MalformedURLException {
-	if (getRequestObject() != null) {
+	if (getRequestObject() != null && getRequestMethod().equalsIgnoreCase("GET")) {
 	    ObjectMapper mapper = new ObjectMapper();
 	    @SuppressWarnings("unchecked")
 	    Map<String, Object> map = mapper.convertValue(getRequestObject(), Map.class);

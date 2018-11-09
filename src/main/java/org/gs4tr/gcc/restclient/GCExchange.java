@@ -1,5 +1,6 @@
 package org.gs4tr.gcc.restclient;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -73,6 +74,11 @@ import org.gs4tr.gcc.restclient.util.APIUtils;
 import org.gs4tr.gcc.restclient.util.StringUtils;
 import org.w3c.dom.DOMException;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class GCExchange {
     private GCConfig config = null;
 
@@ -88,7 +94,7 @@ public class GCExchange {
 	if (StringUtils.IsNullOrWhiteSpace(conf.getApiUrl())) {
 	    throw new IllegalArgumentException("APIUrl is required");
 	}
-	if(StringUtils.IsNullOrWhiteSpace(this.config.getBearerToken())) {
+	if(StringUtils.IsNullOrWhiteSpace(conf.getBearerToken())) {
 	    if (StringUtils.IsNullOrWhiteSpace(conf.getUserName())) {
 		throw new IllegalArgumentException("Username is required");
 	    }
@@ -129,6 +135,10 @@ public class GCExchange {
     public Boolean logout() {
 	APIUtils.doRequest(new SessionTerminate(config));
 	return true;
+    }
+    
+    public void setConnectorKey(String connectorKey) {
+	config.setConnectorKey(connectorKey);
     }
     
     /**
@@ -336,11 +346,11 @@ public class GCExchange {
     /**
      * Gets the tasks list for the specified submission
      * 
-     * @param submissionId Submission Id
+     * @param request SubmissionRequest
      * @return Paged list of {@link GCTask}
      */
-    public TasksResponseData getSubmissionTasks(Long submissionId) {
-	TasksResponse response = (TasksResponse)APIUtils.doRequest(new SubmissionTasks(config, new SubmissionRequest(submissionId)));
+    public TasksResponseData getSubmissionTasks(SubmissionRequest request) {
+	TasksResponse response = (TasksResponse)APIUtils.doRequest(new SubmissionTasks(config, request));
 	return response.getResponseData();
     }
     
@@ -385,6 +395,34 @@ public class GCExchange {
      */
     public InputStream downloadTask(Long taskId) {
 	return APIUtils.doDownload(new TasksDownload(config, new TaskRequest(taskId)));
+    }
+    
+    /**
+     * Utility method. Creates json from object
+     * 
+     * @param object Object to create json
+     * @return Requested object in json format
+     * @throws JsonProcessingException Json generation exception
+     */
+    public String createJson(Object object) throws JsonProcessingException {
+	ObjectMapper mapper = new ObjectMapper();
+	return mapper.writeValueAsString(object);
+    }
+    
+    /**
+     * Utility method. Create object of requested class from json
+     * 
+     * @param json Json string
+     * @param outputClass Output class
+     * @return Object created from json
+     * @throws IOException Json parsing exception
+     * @throws JsonMappingException Json parsing exception
+     * @throws JsonParseException Json parsing exception
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public Object parseJson(String json, Class outputClass) throws JsonParseException, JsonMappingException, IOException {
+	ObjectMapper mapper = new ObjectMapper();
+	return mapper.readValue(json, outputClass);
     }
 
 }

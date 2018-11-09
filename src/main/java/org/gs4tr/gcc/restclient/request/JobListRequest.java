@@ -8,8 +8,8 @@ public class JobListRequest extends PageableRequest {
 
     @JsonProperty("state")
     private String[] jobStatuses;
-    @JsonProperty("job_id")
-    private Long jobId;
+    @JsonProperty("submission_id")
+    private Long submissionId;
     @JsonProperty("submitter")
     private String submitter;
     @JsonProperty("locale")
@@ -19,10 +19,10 @@ public class JobListRequest extends PageableRequest {
 
     }
 
-    public JobListRequest(Long pageNumber, Long pageSize, JobStatus[] jobStatuses, Long jobId, String submitter, String locale) {
+    public JobListRequest(Long pageNumber, Long pageSize, JobStatus[] jobStatuses, Long submissionId, String submitter, String locale) {
 	super(pageNumber, pageSize);
 	setJobStatuses(jobStatuses);
-	this.jobId = jobId;
+	this.setSubmissionId(submissionId);
 	this.submitter = submitter;
 	this.locale = locale;
     }
@@ -47,14 +47,6 @@ public class JobListRequest extends PageableRequest {
 	}
     }
 
-    public Long getJobId() {
-	return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-	this.jobId = jobId;
-    }
-
     public String getSubmitter() {
 	return submitter;
     }
@@ -69,6 +61,14 @@ public class JobListRequest extends PageableRequest {
 
     public void setLocale(String locale) {
 	this.locale = locale;
+    }
+
+    public Long getSubmissionId() {
+	return submissionId;
+    }
+
+    public void setSubmissionId(Long submissionId) {
+	this.submissionId = submissionId;
     }
 
 }

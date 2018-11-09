@@ -21,6 +21,7 @@ public class UploadFileRequest extends GCRequest {
     private String submitter;
     private String path;
     private String customAttributes;
+    private String publicPreviewUrl;
     private Long sequenceNumber;
 
     public UploadFileRequest(String filePath, String name, String fileType) throws IOException {
@@ -116,6 +117,9 @@ public class UploadFileRequest extends GCRequest {
 	if (this.sequenceNumber != null && this.sequenceNumber > 0) {
 	    parameters.put("sequence_number", this.sequenceNumber);
 	}
+	if (!StringUtils.isNullOrEmpty(this.getPublicPreviewUrl())) {
+	    parameters.put("public_preview_url", this.getPublicPreviewUrl());
+	}
 
 	parameters.put("file", this.contents);
 	return parameters;
@@ -191,6 +195,14 @@ public class UploadFileRequest extends GCRequest {
 
     public void setSequenceNumber(Long sequenceNumber) {
 	this.sequenceNumber = sequenceNumber;
+    }
+
+    public String getPublicPreviewUrl() {
+	return publicPreviewUrl;
+    }
+
+    public void setPublicPreviewUrl(String publicPreviewUrl) {
+	this.publicPreviewUrl = publicPreviewUrl;
     }
 
 }

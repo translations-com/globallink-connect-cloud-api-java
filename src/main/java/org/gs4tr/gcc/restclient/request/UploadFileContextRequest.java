@@ -15,6 +15,7 @@ public class UploadFileContextRequest extends GCRequest {
 
     private String name;
     @JsonProperty("type")
+    private String xsltType;
     private ContextType contextType;
     @JsonProperty("preview_file")
     private byte[] contents;
@@ -77,6 +78,12 @@ public class UploadFileContextRequest extends GCRequest {
 	if (!StringUtils.isNullOrEmpty(this.uniqueId)) {
 	    parameters.put("unique_id", this.uniqueId);
 	}
+	if(contextType.equals(ContextType.XSLT)){
+	    if(StringUtils.isNullOrEmpty(this.xsltType)){
+		throw new IllegalStateException("For XSLT context type it's required to set xsltType");
+	    }
+	    parameters.put("type", this.xsltType);
+	}
 
 	return parameters;
     }
@@ -122,6 +129,14 @@ public class UploadFileContextRequest extends GCRequest {
 
     public void setUniqueId(String uniqueId) {
 	this.uniqueId = uniqueId;
+    }
+
+    public String getXsltType() {
+	return xsltType;
+    }
+
+    public void setXsltType(String xsltType) {
+	this.xsltType = xsltType;
     }
 
 }
