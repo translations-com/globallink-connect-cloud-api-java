@@ -26,8 +26,8 @@
 		<project.scm.id>git-scm-server</project.scm.id>
 	</properties>
 	<scm>
-		<connection>scm:git:git://github.com/translations-com/globallink-connect-cloud-api-java.git</connection>
-		<developerConnection>scm:git:git://github.com/translations-com/globallink-connect-cloud-api-java.git</developerConnection>
+		<connection>scm:git:https://github.com/translations-com/globallink-connect-cloud-api-java.git</connection>
+		<developerConnection>scm:git:https://github.com/translations-com/globallink-connect-cloud-api-java.git</developerConnection>
 		<url>https://github.com/translations-com/globallink-connect-cloud-api-java</url>
 	</scm>
 	
