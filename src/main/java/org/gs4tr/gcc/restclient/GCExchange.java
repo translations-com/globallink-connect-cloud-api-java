@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.gs4tr.gcc.restclient.dto.MessageResponse;
 import org.gs4tr.gcc.restclient.model.Connector;
 import org.gs4tr.gcc.restclient.model.GCFile;
 import org.gs4tr.gcc.restclient.model.GCJob;
@@ -28,6 +29,7 @@ import org.gs4tr.gcc.restclient.operation.Context;
 import org.gs4tr.gcc.restclient.operation.Context.ContextResponse;
 import org.gs4tr.gcc.restclient.operation.ContextConfig;
 import org.gs4tr.gcc.restclient.operation.ContextConfig.ContextConfigResponse;
+import org.gs4tr.gcc.restclient.operation.JobCancel;
 import org.gs4tr.gcc.restclient.operation.JobStatus;
 import org.gs4tr.gcc.restclient.operation.JobStatus.StatusResponse;
 import org.gs4tr.gcc.restclient.operation.JobTasks;
@@ -39,6 +41,7 @@ import org.gs4tr.gcc.restclient.operation.Jobs.JobsResponseData;
 import org.gs4tr.gcc.restclient.operation.SessionStart;
 import org.gs4tr.gcc.restclient.operation.SessionStart.SessionStartResponse;
 import org.gs4tr.gcc.restclient.operation.SessionTerminate;
+import org.gs4tr.gcc.restclient.operation.SubmissionCancel;
 import org.gs4tr.gcc.restclient.operation.SubmissionCreate;
 import org.gs4tr.gcc.restclient.operation.SubmissionCreate.SubmissionCreateResponse;
 import org.gs4tr.gcc.restclient.operation.SubmissionJobs;
@@ -58,6 +61,7 @@ import org.gs4tr.gcc.restclient.operation.Tasks.TasksResponseData;
 import org.gs4tr.gcc.restclient.operation.TasksConfirm;
 import org.gs4tr.gcc.restclient.operation.TasksConfirm.TasksConfirmResponse;
 import org.gs4tr.gcc.restclient.operation.TasksDownload;
+import org.gs4tr.gcc.restclient.operation.TasksError;
 import org.gs4tr.gcc.restclient.request.JobListRequest;
 import org.gs4tr.gcc.restclient.request.JobRequest;
 import org.gs4tr.gcc.restclient.request.PageableRequest;
@@ -65,6 +69,7 @@ import org.gs4tr.gcc.restclient.request.SubmissionCreateRequest;
 import org.gs4tr.gcc.restclient.request.SubmissionRequest;
 import org.gs4tr.gcc.restclient.request.SubmissionSubmitRequest;
 import org.gs4tr.gcc.restclient.request.SubmissionsListRequest;
+import org.gs4tr.gcc.restclient.request.TaskErrorRequest;
 import org.gs4tr.gcc.restclient.request.TaskListRequest;
 import org.gs4tr.gcc.restclient.request.TaskRequest;
 import org.gs4tr.gcc.restclient.request.UploadContentReferenceRequest;
@@ -333,6 +338,28 @@ public class GCExchange {
     }
     
     /**
+     * Cancel submission
+     * 
+     * @param submissionId Submission Id
+     * @return MessageResponse {@link MessageResponse} response with status and message
+     */
+    public MessageResponse cancelSubmission(Long submissionId) {
+	MessageResponse response = (MessageResponse)APIUtils.doRequest(new SubmissionCancel(config, new SubmissionRequest(submissionId)));
+	return response;
+    }
+    
+    /**
+     * Cancel job
+     * 
+     * @param jobId Job Id
+     * @return MessageResponse {@link MessageResponse} response with status and message
+     */
+    public MessageResponse cancelJob(Long jobId) {
+	MessageResponse response = (MessageResponse)APIUtils.doRequest(new JobCancel(config, new JobRequest(jobId)));
+	return response;
+    }
+    
+    /**
      * Submit a list of one or more content objects (content-ids) to one ore more target languages Notes: 1."connector_locale" is case sensitive 2.Only child nodes(is_parent: 0) can be sent for translation
      * 
      * @param request {@link SubmissionSubmitRequest}
@@ -374,6 +401,17 @@ public class GCExchange {
     public TasksResponseData getTasksList(TaskListRequest request) {
 	TasksResponse response = (TasksResponse)APIUtils.doRequest(new Tasks(config, request));
 	return response.getResponseData();
+    }
+    
+    /**
+     * Set the Job tasks error for given task
+     * 
+     * @param request {@link TaskErrorRequest}
+     * @return MessageResponse {@link MessageResponse} response with status and message
+     */
+    public MessageResponse setTaskError(TaskErrorRequest request) {
+	MessageResponse response = (MessageResponse)APIUtils.doRequest(new TasksError(config, request));
+	return response;
     }
     
     /**

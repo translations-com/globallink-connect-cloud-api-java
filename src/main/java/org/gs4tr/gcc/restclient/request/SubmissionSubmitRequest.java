@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.gs4tr.gcc.restclient.model.ContentLocales;
 import org.gs4tr.gcc.restclient.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,10 +24,6 @@ public class SubmissionSubmitRequest extends GCRequest {
     private List<String> contentList;
     @JsonProperty("reference_file_list")
     private List<String> referenceFileList;
-    @JsonProperty("public_preview_url")
-    private String publicPreviewUrl;
-    @JsonProperty("context_url")
-    private String contextUrl;
     @JsonProperty("submitter")
     private String submitter;
     @JsonProperty("callback_url")
@@ -35,6 +32,8 @@ public class SubmissionSubmitRequest extends GCRequest {
     private Map<String, Object> attributes;
     @JsonProperty("config")
     private Map<String, Object> config;
+    @JsonProperty("content_list_locale")
+    private List<ContentLocales> contentLocales;
 
     public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale, List<String> targetLocales,
 	    List<String> contentList) {
@@ -60,18 +59,35 @@ public class SubmissionSubmitRequest extends GCRequest {
 	this.contentList = contentList;
     }
 
+    public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale,
+	    List<ContentLocales> contentLocales) {
+	if (StringUtils.isNullOrEmpty(submissionName)) {
+	    throw new IllegalArgumentException("Submission Name is required");
+	}
+	if (dueDate.compareTo(new Date()) < 0) {
+	    throw new IllegalArgumentException("DueDate must be after current date");
+	}
+	if (StringUtils.isNullOrEmpty(sourceLocale)) {
+	    throw new IllegalArgumentException("Source Locale is required");
+	}
+	if (contentLocales == null || contentLocales.size() <= 0) {
+	    throw new IllegalArgumentException("At least one Content is required");
+	}
+	this.submissionName = submissionName;
+	this.dueDate = dueDate;
+	this.sourceLocale = sourceLocale;
+	this.contentLocales = contentLocales;
+    }
+
     public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale, List<String> targetLocales,
 	    List<String> contentList, String instructions, String submitter, List<String> referenceFileList,
-	    String publicPreviewUrl, String contextUrl, String previewUrl, String callbackUrl,
-	    Map<String, Object> attributes, Map<String, Object> config) {
+	    String callbackUrl, Map<String, Object> attributes, Map<String, Object> config) {
 	this(submissionName, dueDate, sourceLocale, targetLocales, contentList);
 	this.instructions = instructions;
 	this.submitter = submitter;
 	this.attributes = attributes;
 	this.config = config;
 	this.referenceFileList = referenceFileList;
-	this.publicPreviewUrl = publicPreviewUrl;
-	this.contextUrl = contextUrl;
 	this.callbackUrl = callbackUrl;
     }
 
@@ -131,22 +147,6 @@ public class SubmissionSubmitRequest extends GCRequest {
 	this.referenceFileList = referenceFileList;
     }
 
-    public String getPublicPreviewUrl() {
-	return publicPreviewUrl;
-    }
-
-    public void setPublicPreviewUrl(String publicPreviewUrl) {
-	this.publicPreviewUrl = publicPreviewUrl;
-    }
-
-    public String getContextUrl() {
-	return contextUrl;
-    }
-
-    public void setContextUrl(String contextUrl) {
-	this.contextUrl = contextUrl;
-    }
-
     public String getSubmitter() {
 	return submitter;
     }
@@ -177,6 +177,14 @@ public class SubmissionSubmitRequest extends GCRequest {
 
     public void setConfig(Map<String, Object> config) {
 	this.config = config;
+    }
+
+    public List<ContentLocales> getContentLocales() {
+	return contentLocales;
+    }
+
+    public void setContentLocales(List<ContentLocales> contentLocales) {
+	this.contentLocales = contentLocales;
     }
 
 }

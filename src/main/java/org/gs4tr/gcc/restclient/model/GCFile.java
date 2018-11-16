@@ -39,6 +39,8 @@ public class GCFile {
     private String publicPreviewUrl;
     @JsonProperty("context_url")
     private String contextUrl;
+    @JsonProperty("target_context_url")
+    private String targetContextUrl;
     @JsonProperty("pd_classifier")
     private String pdClassifier;
     @JsonProperty("file_path")
@@ -208,6 +210,14 @@ public class GCFile {
 
     public void setContentId(String contentId) {
         this.contentId = contentId;
+    }
+
+    public String getTargetContextUrl() {
+	return targetContextUrl;
+    }
+
+    public void setTargetContextUrl(String targetContextUrl) {
+	this.targetContextUrl = targetContextUrl;
     }
 
 }
