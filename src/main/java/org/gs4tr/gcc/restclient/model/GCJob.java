@@ -17,6 +17,8 @@ public class GCJob {
     private Date createdAt;
     @JsonProperty("translated_date")
     private Date translatedDate;
+    @JsonProperty("due_date")
+    private Date dueDate;
     @JsonProperty("submission_id")
     private Long submissionId;
     @JsonProperty("job_id")
@@ -31,6 +33,12 @@ public class GCJob {
     private List<GCLanguageJob> languageJobs;
     @JsonProperty("attributes")
     private Map<String, String> attributes;
+    @JsonProperty("is_cancelled")
+    private Boolean isCancelled;
+    @JsonProperty("is_error")
+    private Boolean isError;
+    @JsonProperty("is_overdue")
+    private Boolean isOverdue;
 
     public GCJob() {
 
@@ -122,6 +130,38 @@ public class GCJob {
 
     public void setJobId(Long jobId) {
 	this.jobId = jobId;
+    }
+
+    public Date getDueDate() {
+	return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+	this.dueDate = dueDate;
+    }
+
+    public Boolean getIsCancelled() {
+	return isCancelled;
+    }
+
+    public void setIsCancelled(Boolean isCancelled) {
+	this.isCancelled = isCancelled;
+    }
+
+    public Boolean getIsError() {
+	return isError;
+    }
+
+    public void setIsError(Boolean isError) {
+	this.isError = isError;
+    }
+
+    public Boolean getIsOverdue() {
+	return isOverdue;
+    }
+
+    public void setIsOverdue(Boolean isOverdue) {
+	this.isOverdue = isOverdue;
     }
 
 }

@@ -12,6 +12,14 @@ public class SubmissionsListRequest extends PageableRequest {
     private Long submissionId;
     @JsonProperty("submitter")
     private String submitter;
+    @JsonProperty("is_cancelled")
+    private Integer isCancelled;
+    @JsonProperty("is_error")
+    private Integer isError;
+    @JsonProperty("is_overdue")
+    private Integer isOverdue;
+    @JsonProperty("submissionName")
+    private String submissionName;
 
     public SubmissionsListRequest() {
 
@@ -59,6 +67,38 @@ public class SubmissionsListRequest extends PageableRequest {
 
     public void setSubmissionId(Long submissionId) {
 	this.submissionId = submissionId;
+    }
+
+    public String getSubmissionName() {
+	return submissionName;
+    }
+
+    public void setSubmissionName(String submissionName) {
+	this.submissionName = submissionName;
+    }
+
+    public Integer getIsCancelled() {
+	return isCancelled;
+    }
+
+    public void setIsCancelled(Integer isCancelled) {
+	this.isCancelled = isCancelled;
+    }
+
+    public Integer getIsError() {
+	return isError;
+    }
+
+    public void setIsError(Integer isError) {
+	this.isError = isError;
+    }
+
+    public Integer getIsOverdue() {
+	return isOverdue;
+    }
+
+    public void setIsOverdue(Integer isOverdue) {
+	this.isOverdue = isOverdue;
     }
 
 }

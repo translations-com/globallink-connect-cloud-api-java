@@ -13,6 +13,8 @@ public class GCSubmission extends GCBasicModel {
     private String submitter;
     @JsonProperty("created_at")
     private Date createdAt;
+    @JsonProperty("due_date")
+    private Date dueDate;
     @JsonProperty("submission_id")
     private Long submissionId;
     @JsonProperty("submission_name")
@@ -21,6 +23,12 @@ public class GCSubmission extends GCBasicModel {
     private Locale sourceLocale;
     @JsonProperty("language_jobs")
     private List<GCLanguageJob> languageJobs;
+    @JsonProperty("is_cancelled")
+    private Boolean isCancelled;
+    @JsonProperty("is_error")
+    private Boolean isError;
+    @JsonProperty("is_overdue")
+    private Boolean isOverdue;
 
     public GCSubmission() {
 
@@ -80,6 +88,38 @@ public class GCSubmission extends GCBasicModel {
 
     public void setLanguageJobs(List<GCLanguageJob> languageJobs) {
 	this.languageJobs = languageJobs;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Boolean getIsCancelled() {
+        return isCancelled;
+    }
+
+    public void setIsCancelled(Boolean isCancelled) {
+        this.isCancelled = isCancelled;
+    }
+
+    public Boolean getIsError() {
+        return isError;
+    }
+
+    public void setIsError(Boolean isError) {
+        this.isError = isError;
+    }
+
+    public Boolean getIsOverdue() {
+        return isOverdue;
+    }
+
+    public void setIsOverdue(Boolean isOverdue) {
+        this.isOverdue = isOverdue;
     }
 
 }

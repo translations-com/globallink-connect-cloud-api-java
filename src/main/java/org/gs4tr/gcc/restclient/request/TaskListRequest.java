@@ -14,20 +14,26 @@ public class TaskListRequest extends PageableRequest {
     private Long submissionId;
     @JsonProperty("unique_identifiers")
     private String[] uniqueIdentifiers;
-    @JsonProperty("node_ids")
-    private String[] nodeIds;
+    @JsonProperty("content_ids")
+    private String[] contentIds;
+    @JsonProperty("is_cancelled")
+    private Integer isCancelled;
+    @JsonProperty("is_error")
+    private Integer isError;
+    @JsonProperty("confirm_cancel")
+    private Integer isCancelConfirmed;
 
     public TaskListRequest() {
 
     }
 
     public TaskListRequest(TaskStatus[] statuses, String locale, Long submissionId, String[] uniqueIdentifiers,
-	    String[] nodeIds) {
+	    String[] contentIds) {
 	setTaskStatuses(statuses);
 	this.locale = locale;
 	this.submissionId = submissionId;
 	this.uniqueIdentifiers = uniqueIdentifiers;
-	this.nodeIds = nodeIds;
+	this.contentIds = contentIds;
     }
 
     @JsonProperty("state")
@@ -75,12 +81,40 @@ public class TaskListRequest extends PageableRequest {
 	this.uniqueIdentifiers = uniqueIdentifiers;
     }
 
-    public String[] getNodeIds() {
-	return nodeIds;
+    public String[] getContentIds() {
+	return contentIds;
     }
 
-    public void setNodeIds(String[] nodeIds) {
-	this.nodeIds = nodeIds;
+    public void setContentIds(String[] contentIds) {
+	this.contentIds = contentIds;
+    }
+
+    public void setStatuses(String[] statuses) {
+	this.statuses = statuses;
+    }
+
+    public Integer getIsCancelled() {
+	return isCancelled;
+    }
+
+    public void setIsCancelled(Integer isCancelled) {
+	this.isCancelled = isCancelled;
+    }
+
+    public Integer getIsError() {
+	return isError;
+    }
+
+    public void setIsError(Integer isError) {
+	this.isError = isError;
+    }
+
+    public Integer getIsCancelConfirmed() {
+	return isCancelConfirmed;
+    }
+
+    public void setIsCancelConfirmed(Integer isCancelConfirmed) {
+	this.isCancelConfirmed = isCancelConfirmed;
     }
 
 }

@@ -5,8 +5,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GCAttribute {
-    @JsonProperty("default_value")
-    private String defaultValue;
+    @JsonProperty("_id")
+    private String id;
     @JsonProperty("is_mandatory")
     private Boolean isMandatory;
     @JsonProperty("is_summary_page_enabled")
@@ -23,14 +23,6 @@ public class GCAttribute {
 
     public GCAttribute() {
 
-    }
-
-    public String getDefaultValue() {
-	return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-	this.defaultValue = defaultValue;
     }
 
     public Boolean getIsMandatory() {
@@ -103,6 +95,14 @@ public class GCAttribute {
 
     public void setName(String name) {
 	this.name = name;
+    }
+
+    public String getId() {
+	return id;
+    }
+
+    public void setId(String id) {
+	this.id = id;
     }
 
 }

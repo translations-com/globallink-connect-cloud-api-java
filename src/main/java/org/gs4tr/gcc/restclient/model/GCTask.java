@@ -9,10 +9,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GCTask {
     @JsonProperty("submission_id")
     private Long submissionId;
+    @JsonProperty("job_id")
+    private Long jobId;
     @JsonProperty("task_id")
     private Long taskId;
     @JsonProperty("node_id")
     private String nodeId;
+    @JsonProperty("content_id")
+    private String contentId;
+    @JsonProperty("submissionName")
+    private String submissionName;
     @JsonProperty("name")
     private String name;
     @JsonProperty("node_type")
@@ -25,6 +31,15 @@ public class GCTask {
     private Locale targetLocale;
     @JsonProperty("last_updated")
     private Date lastUpdated;
+
+    @JsonProperty("error_message")
+    private String errorMessage;
+    @JsonProperty("is_cancelled")
+    private Boolean isCancelled;
+    @JsonProperty("is_error")
+    private Boolean isError;
+    @JsonProperty("confirm_cancel")
+    private Boolean isCancelConfirmed;
 
     public GCTask() {
 
@@ -100,6 +115,62 @@ public class GCTask {
 
     public void setLastUpdated(Date lastUpdated) {
 	this.lastUpdated = lastUpdated;
+    }
+
+    public Long getJobId() {
+	return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+	this.jobId = jobId;
+    }
+
+    public String getContentId() {
+	return contentId;
+    }
+
+    public void setContentId(String contentId) {
+	this.contentId = contentId;
+    }
+
+    public String getSubmissionName() {
+	return submissionName;
+    }
+
+    public void setSubmissionName(String submissionName) {
+	this.submissionName = submissionName;
+    }
+
+    public String getErrorMessage() {
+	return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+	this.errorMessage = errorMessage;
+    }
+
+    public Boolean getIsCancelled() {
+	return isCancelled;
+    }
+
+    public void setIsCancelled(Boolean isCancelled) {
+	this.isCancelled = isCancelled;
+    }
+
+    public Boolean getIsError() {
+	return isError;
+    }
+
+    public void setIsError(Boolean isError) {
+	this.isError = isError;
+    }
+
+    public Boolean getIsCancelConfirmed() {
+	return isCancelConfirmed;
+    }
+
+    public void setIsCancelConfirmed(Boolean isCancelConfirmed) {
+	this.isCancelConfirmed = isCancelConfirmed;
     }
 
 }

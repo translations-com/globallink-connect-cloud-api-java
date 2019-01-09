@@ -14,12 +14,19 @@ public class JobListRequest extends PageableRequest {
     private String submitter;
     @JsonProperty("locale")
     private String locale;
+    @JsonProperty("is_cancelled")
+    private Integer isCancelled;
+    @JsonProperty("is_error")
+    private Integer isError;
+    @JsonProperty("is_overdue")
+    private Integer isOverdue;
 
     public JobListRequest() {
 
     }
 
-    public JobListRequest(Long pageNumber, Long pageSize, JobStatus[] jobStatuses, Long submissionId, String submitter, String locale) {
+    public JobListRequest(Long pageNumber, Long pageSize, JobStatus[] jobStatuses, Long submissionId, String submitter,
+	    String locale) {
 	super(pageNumber, pageSize);
 	setJobStatuses(jobStatuses);
 	this.setSubmissionId(submissionId);
@@ -69,6 +76,30 @@ public class JobListRequest extends PageableRequest {
 
     public void setSubmissionId(Long submissionId) {
 	this.submissionId = submissionId;
+    }
+
+    public Integer getIsCancelled() {
+	return isCancelled;
+    }
+
+    public void setIsCancelled(Integer isCancelled) {
+	this.isCancelled = isCancelled;
+    }
+
+    public Integer getIsError() {
+	return isError;
+    }
+
+    public void setIsError(Integer isError) {
+	this.isError = isError;
+    }
+
+    public Integer getIsOverdue() {
+	return isOverdue;
+    }
+
+    public void setIsOverdue(Integer isOverdue) {
+	this.isOverdue = isOverdue;
     }
 
 }

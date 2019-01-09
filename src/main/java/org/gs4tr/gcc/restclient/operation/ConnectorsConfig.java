@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
-import org.gs4tr.gcc.restclient.model.FileType;
+import org.gs4tr.gcc.restclient.model.GCAttribute;
 import org.gs4tr.gcc.restclient.model.LocaleConfig;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 
@@ -60,7 +60,9 @@ public class ConnectorsConfig extends GCOperation {
 	@JsonProperty("supported_locales")
 	private List<LocaleConfig> supportedLocales;
 	@JsonProperty("file_types")
-	private List<FileType> fileTypes;
+	private List<String> fileTypes;
+	@JsonProperty("submission_options")
+	private ConnectorsConfigSubmissionOptions submissionOptions;
 
 	public List<LocaleConfig> getSupportedLocales() {
 	    return supportedLocales;
@@ -70,12 +72,35 @@ public class ConnectorsConfig extends GCOperation {
 	    this.supportedLocales = supportedLocales;
 	}
 
-	public List<FileType> getFileTypes() {
+	public List<String> getFileTypes() {
 	    return fileTypes;
 	}
 
-	public void setFileTypes(List<FileType> fileTypes) {
+	public void setFileTypes(List<String> fileTypes) {
 	    this.fileTypes = fileTypes;
+	}
+
+	public ConnectorsConfigSubmissionOptions getSubmissionOptions() {
+	    return submissionOptions;
+	}
+
+	public void setSubmissionOptions(ConnectorsConfigSubmissionOptions submissionOptions) {
+	    this.submissionOptions = submissionOptions;
+	}
+
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ConnectorsConfigSubmissionOptions {
+	@JsonProperty("attributes")
+	private List<GCAttribute> attributes;
+
+	public List<GCAttribute> getAttributes() {
+	    return attributes;
+	}
+
+	public void setAttributes(List<GCAttribute> attributes) {
+	    this.attributes = attributes;
 	}
 
     }
