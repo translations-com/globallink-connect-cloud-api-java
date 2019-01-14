@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.translations.globallink</groupId>
 	<artifactId>gcc-restclient</artifactId>
-	<version>2.1.1-SNAPSHOT</version>
+	<version>2.2.1_RC1</version>
 	<packaging>bundle</packaging>
 	<name>globallink-connect-restclient</name>
 	<description>GlobalLink Connect Cloud java is a library to connect your system to GlobalLink Connect Cloud REST API.</description>
