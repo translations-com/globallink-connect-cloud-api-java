@@ -61,6 +61,7 @@ import org.gs4tr.gcc.restclient.operation.Tasks.TasksResponseData;
 import org.gs4tr.gcc.restclient.operation.TasksConfirm;
 import org.gs4tr.gcc.restclient.operation.TasksConfirm.TasksConfirmResponse;
 import org.gs4tr.gcc.restclient.operation.TasksConfirmCancellation;
+import org.gs4tr.gcc.restclient.operation.TasksConfirmCancellation.TaskConfirmCancellationFailure;
 import org.gs4tr.gcc.restclient.operation.TasksConfirmCancellation.TasksConfirmCancellationResponse;
 import org.gs4tr.gcc.restclient.operation.TasksDownload;
 import org.gs4tr.gcc.restclient.operation.TasksError;
@@ -431,11 +432,12 @@ public class GCExchange {
     /**
      * Confirm that cancelled task is processed on client side
      * 
-     * @param taskIds List of Task Ids to cancel
-     * @return  {@link TasksConfirmCancellationResponse} response
+     * @param taskIds List of Task Ids to confirm cancellation
+     * @return  List of confirm cancellation failures. If list is empty, then result is success for all specified task ids
      */
-    public TasksConfirmCancellationResponse confirmTaskCancellation(List<Long> taskIds) {
-	return (TasksConfirmCancellationResponse)APIUtils.doRequest(new TasksConfirmCancellation(config, new TasksRequest(taskIds)));
+    public List<TaskConfirmCancellationFailure> confirmTaskCancellation(List<Long> taskIds) {
+	TasksConfirmCancellationResponse response = (TasksConfirmCancellationResponse)APIUtils.doRequest(new TasksConfirmCancellation(config, new TasksRequest(taskIds)));
+	return response.getResponseData().getTaskConfirmCancellationFailures();
     }
     
     /**

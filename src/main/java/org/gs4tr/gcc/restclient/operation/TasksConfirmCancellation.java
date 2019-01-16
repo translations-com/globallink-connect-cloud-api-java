@@ -68,19 +68,19 @@ public class TasksConfirmCancellation extends GCOperation {
 
     public static class TasksConfirmCancellationResponseData {
 	@JsonProperty("fail_tasks")
-	private List<TaskCancelConfirmation> taskCancelConfirmations;
+	private List<TaskConfirmCancellationFailure> taskConfirmCancellationFailures;
 
-	public List<TaskCancelConfirmation> getTaskCancelConfirmations() {
-	    return taskCancelConfirmations;
+	public List<TaskConfirmCancellationFailure> getTaskConfirmCancellationFailures() {
+	    return taskConfirmCancellationFailures;
 	}
 
-	public void setTaskCancelConfirmations(List<TaskCancelConfirmation> taskCancelConfirmations) {
-	    this.taskCancelConfirmations = taskCancelConfirmations;
+	public void setTaskConfirmCancellationFailures(List<TaskConfirmCancellationFailure> taskConfirmCancellationFailures) {
+	    this.taskConfirmCancellationFailures = taskConfirmCancellationFailures;
 	}
 
     }
 
-    public static class TaskCancelConfirmation {
+    public static class TaskConfirmCancellationFailure {
 	@JsonProperty("task_id")
 	private Long taskId;
 	@JsonProperty("message")
