@@ -6,38 +6,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PageableResponseData {
     @JsonProperty("current_page_number")
-    private Integer currentPageNumber;
+    private Long currentPageNumber;
     @JsonProperty("total_records_count")
-    private Integer totalRecordsCount;
+    private Long totalRecordsCount;
     @JsonProperty("total_result_pages_count")
-    private Integer totalResultPagesCount;
+    private Long totalResultPagesCount;
     
     public Boolean isEmpty(){
 	return totalRecordsCount==null || totalRecordsCount<1;
     }
-    
-    public Integer getCurrentPageNumber() {
-	return currentPageNumber;
+
+    public Long getCurrentPageNumber() {
+        return currentPageNumber;
     }
 
-    public void setCurrentPageNumber(Integer currentPageNumber) {
-	this.currentPageNumber = currentPageNumber;
+    public void setCurrentPageNumber(Long currentPageNumber) {
+        this.currentPageNumber = currentPageNumber;
     }
 
-    public Integer getTotalRecordsCount() {
-	return totalRecordsCount;
+    public Long getTotalRecordsCount() {
+        return totalRecordsCount;
     }
 
-    public void setTotalRecordsCount(Integer totalRecordsCount) {
-	this.totalRecordsCount = totalRecordsCount;
+    public void setTotalRecordsCount(Long totalRecordsCount) {
+        this.totalRecordsCount = totalRecordsCount;
     }
 
-    public Integer getTotalResultPagesCount() {
-	return totalResultPagesCount;
+    public Long getTotalResultPagesCount() {
+        return totalResultPagesCount;
     }
 
-    public void setTotalResultPagesCount(Integer totalResultPagesCount) {
-	this.totalResultPagesCount = totalResultPagesCount;
+    public void setTotalResultPagesCount(Long totalResultPagesCount) {
+        this.totalResultPagesCount = totalResultPagesCount;
     }
 
 }
