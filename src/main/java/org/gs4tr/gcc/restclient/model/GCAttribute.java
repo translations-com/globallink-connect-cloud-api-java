@@ -2,11 +2,15 @@ package org.gs4tr.gcc.restclient.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GCAttribute {
     @JsonProperty("_id")
     private String id;
+    @JsonProperty("default_value")
+    private String defaultValue;
     @JsonProperty("is_mandatory")
     private Boolean isMandatory;
     @JsonProperty("is_summary_page_enabled")
@@ -103,6 +107,14 @@ public class GCAttribute {
 
     public void setId(String id) {
 	this.id = id;
+    }
+
+    public String getDefaultValue() {
+	return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+	this.defaultValue = defaultValue;
     }
 
 }
