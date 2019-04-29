@@ -1,16 +1,19 @@
 package org.gs4tr.gcc.restclient.util;
 
+import static org.gs4tr.gcc.restclient.util.HttpUtils.addHeaders;
+import static org.gs4tr.gcc.restclient.util.HttpUtils.openConnection;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.dto.PageableResponseData;
 import org.gs4tr.gcc.restclient.operation.Connectors;
@@ -45,7 +48,7 @@ public class APIUtils {
 
 	MultipartUtility multipart = null;
 	try {
-	    multipart = new MultipartUtility(operation.getRequestUrl().toString(), operation.getConfig());
+            multipart = new MultipartUtility(operation.getRequestUrl(), operation.getConfig());
 	    GCRequest request = operation.getRequestObject();
 	    if (request != null && request.getParameters() != null) {
 		Map<String, Object> parameters = request.getParameters();
@@ -107,23 +110,19 @@ public class APIUtils {
 
     public static InputStream doDownload(GCOperation operation) {
 	ObjectMapper mapper = new ObjectMapper();
+        GCConfig config = operation.getConfig();
 	try {
-	    URL url = operation.getRequestUrl();
-	    HttpURLConnection connection;
-	    if (url.toString().startsWith("https")) {
-		connection = (HttpsURLConnection) url.openConnection();
-	    } else {
-		connection = (HttpURLConnection) url.openConnection();
-	    }
+            HttpURLConnection connection = openConnection(operation.getRequestUrl());
 	    connection.setRequestMethod(operation.getRequestMethod());
 	    if(!(operation instanceof Connectors) && !(operation instanceof SessionStart)){
-		if(operation.getConfig().getConnectorKey() == null){
+                if (config.getConnectorKey() == null) {
 		    throw new IllegalStateException("Connector key is required. You can obtain connector key using 'Connectors' operation");
 		}
-		connection.setRequestProperty("connector_key", operation.getConfig().getConnectorKey());
+                connection.setRequestProperty("connector_key", config.getConnectorKey());
 	    }
-	    connection.setRequestProperty("Authorization", "Bearer " + operation.getConfig().getBearerToken());
+            connection.setRequestProperty("Authorization", "Bearer " + config.getBearerToken());
 	    connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+            addHeaders(connection, config.getCustomHeaders());
 	    if (operation.getRequestMethod().equals("GET")) {
 		connection.setDoOutput(false);
 	    } else {
@@ -156,24 +155,20 @@ public class APIUtils {
 
     public static Object doRequest(GCOperation operation) {
 	ObjectMapper mapper = new ObjectMapper();
+        GCConfig config = operation.getConfig();
 	String response = null;
 	try {
-	    URL url = operation.getRequestUrl();
-	    HttpURLConnection connection;
-	    if (url.toString().startsWith("https")) {
-		connection = (HttpsURLConnection) url.openConnection();
-	    } else {
-		connection = (HttpURLConnection) url.openConnection();
-	    }
+            HttpURLConnection connection = openConnection(operation.getRequestUrl());
 	    connection.setRequestMethod(operation.getRequestMethod());
 	    if(!(operation instanceof Connectors) && !(operation instanceof SessionStart)){
-		if(operation.getConfig().getConnectorKey() == null){
+                if (config.getConnectorKey() == null) {
 		    throw new IllegalStateException("Connector key is required. You can obtain connector key using 'Connectors' operation");
 		}
-		connection.setRequestProperty("connector_key", operation.getConfig().getConnectorKey());
+                connection.setRequestProperty("connector_key", config.getConnectorKey());
 	    }
-	    connection.setRequestProperty("Authorization", "Bearer " + operation.getConfig().getBearerToken());
+            connection.setRequestProperty("Authorization", "Bearer " + config.getBearerToken());
 	    connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+            addHeaders(connection, config.getCustomHeaders());
 	    if (operation.getRequestMethod().equals("GET")) {
 		connection.setDoOutput(false);
 	    } else {
@@ -219,4 +214,5 @@ public class APIUtils {
 	    throw new DOMException(DOMException.INVALID_STATE_ERR, "Error parsing response. " + e.getMessage());
 	}
     }
+
 }
