@@ -1,5 +1,8 @@
 package org.gs4tr.gcc.restclient.util;
 
+import static org.gs4tr.gcc.restclient.util.HttpUtils.addHeaders;
+import static org.gs4tr.gcc.restclient.util.HttpUtils.openConnection;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -25,17 +28,16 @@ public class MultipartUtility {
     private OutputStream outputStream;
     private PrintWriter writer;
  
-    public MultipartUtility(String requestURL, GCConfig config)
+    public MultipartUtility(URL requestURL, GCConfig config)
             throws IOException {
          
         boundary = "===" + System.currentTimeMillis() + "===";
-         
-        URL url = new URL(requestURL);
-        httpConn = (HttpsURLConnection) url.openConnection();
+        httpConn = (HttpsURLConnection) openConnection(requestURL);
         httpConn.setRequestMethod("POST");
         httpConn.setRequestProperty("connector_key", config.getConnectorKey());
         httpConn.setRequestProperty("Authorization", "Bearer " + config.getBearerToken());
         httpConn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+        addHeaders(httpConn, config.getCustomHeaders());
         httpConn.setUseCaches(false);
         httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);
@@ -84,7 +86,7 @@ public class MultipartUtility {
         writer.append(name + ": " + value).append(LINE_FEED);
         writer.flush();
     }
-     
+
     public HttpsURLConnection finish() throws IOException {
  
         writer.append(LINE_FEED).flush();
