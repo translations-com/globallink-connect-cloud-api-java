@@ -104,8 +104,8 @@ public class APIUtils {
 
 	    return responseObj;
 	} catch (IOException e) {
-	    throw new IllegalStateException("Error sending request: " + e.getMessage());
-	}
+            throw new IllegalStateException("Error sending request: " + e.getMessage());
+        }
     }
 
     public static InputStream doDownload(GCOperation operation) {

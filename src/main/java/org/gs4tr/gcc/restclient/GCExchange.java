@@ -92,48 +92,49 @@ public class GCExchange {
     private GCConfig config = null;
 
     public GCExchange(GCConfig config) {
-	this.init(config);
+        this.init(config);
     }
     
     public GCConfig getConfig() {
-	return this.config;
+        return this.config;
     }
 
     private void init(GCConfig conf) {
-	if (StringUtils.IsNullOrWhiteSpace(conf.getApiUrl())) {
-	    throw new IllegalArgumentException("APIUrl is required");
-	}
-	if(StringUtils.IsNullOrWhiteSpace(conf.getBearerToken())) {
-	    if (StringUtils.IsNullOrWhiteSpace(conf.getUserName())) {
-		throw new IllegalArgumentException("Username is required");
-	    }
-	    if (StringUtils.IsNullOrWhiteSpace(conf.getPassword())) {
-		throw new IllegalArgumentException("Password is required");
-	    }
-	}
+        if (StringUtils.IsNullOrWhiteSpace(conf.getApiUrl())) {
+            throw new IllegalArgumentException("APIUrl is required");
+        }
+        if (StringUtils.IsNullOrWhiteSpace(conf.getBearerToken())) {
+            if (StringUtils.IsNullOrWhiteSpace(conf.getUserName())) {
+                throw new IllegalArgumentException("Username is required");
+            }
+            if (StringUtils.IsNullOrWhiteSpace(conf.getPassword())) {
+                throw new IllegalArgumentException("Password is required");
+            }
+        }
 
-	this.config = conf;
-	if (!this.config.getApiUrl().endsWith("/")) {
-	    this.config.setApiUrl(this.config.getApiUrl() + "/");
-	}
+        this.config = conf;
+        if (!this.config.getApiUrl().endsWith("/")) {
+            this.config.setApiUrl(this.config.getApiUrl() + "/");
+        }
 
-	if(StringUtils.IsNullOrWhiteSpace(this.config.getBearerToken())) {
-	    login();
-	    try {
-		    getConnectors();
-		} catch (DOMException e) {
-		    throw new IllegalArgumentException("Error parsing response", e);
-		} catch (Exception e) {
-		    throw new IllegalArgumentException("Incorrect client_secret_key", e);
-		}
-	}
+        if (StringUtils.IsNullOrWhiteSpace(this.config.getBearerToken())) {
+            login();
+            try {
+                getConnectors();
+            } catch (DOMException e) {
+                throw new IllegalArgumentException("Error parsing response", e);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Incorrect client_secret_key", e);
+            }
+        }
 
     }
 
     private void login() {
-	SessionStartResponse response = (SessionStartResponse)APIUtils.doRequest(new SessionStart(config));
-	String token = response.getResponseData().getUserSessionKey();
-	config.setBearerToken(token);
+        SessionStartResponse response = (SessionStartResponse) APIUtils.doRequest(new SessionStart(config));
+        String token = response.getResponseData()
+                .getUserSessionKey();
+        config.setBearerToken(token);
     }
     
     /**
@@ -142,12 +143,12 @@ public class GCExchange {
      * @return Is success
      */
     public Boolean logout() {
-	APIUtils.doRequest(new SessionTerminate(config));
-	return true;
+        APIUtils.doRequest(new SessionTerminate(config));
+        return true;
     }
     
     public void setConnectorKey(String connectorKey) {
-	config.setConnectorKey(connectorKey);
+        config.setConnectorKey(connectorKey);
     }
     
     /**
@@ -156,7 +157,7 @@ public class GCExchange {
      * @return Session token
      */
     public String getSessionToken() {
-	return config.getBearerToken();
+        return config.getBearerToken();
     }
     
     /**
@@ -165,8 +166,8 @@ public class GCExchange {
      * @return List of {@link Connector}
      */
     public List<Connector> getConnectors() {
-	ConnectorsResponse response = (ConnectorsResponse)APIUtils.doRequest(new Connectors(config));
-	return response.getResponseData();
+        ConnectorsResponse response = (ConnectorsResponse) APIUtils.doRequest(new Connectors(config));
+        return response.getResponseData();
     }
     
     /**
@@ -175,8 +176,8 @@ public class GCExchange {
      * @return Connector config as {@link ConnectorsConfigResponseData} including supported locales and file types
      */
     public ConnectorsConfigResponseData getConnectorsConfig() {
-	ConnectorsConfigResponse response = (ConnectorsConfigResponse)APIUtils.doRequest(new ConnectorsConfig(config));
-	return response.getResponseData();
+        ConnectorsConfigResponse response = (ConnectorsConfigResponse) APIUtils.doRequest(new ConnectorsConfig(config));
+        return response.getResponseData();
     }
     
     /**
@@ -185,8 +186,8 @@ public class GCExchange {
      * @return Paged list of {@link GCFile}
      */
     public ContentResponseData getContentList() {
-	ContentResponse response = (ContentResponse)APIUtils.doRequest(new Content(this.config));
-	return response.getResponseData();
+        ContentResponse response = (ContentResponse) APIUtils.doRequest(new Content(this.config));
+        return response.getResponseData();
     }
     
     /**
@@ -196,8 +197,8 @@ public class GCExchange {
      * @return Paged list of {@link GCFile}
      */
     public ContentResponseData getContentList(PageableRequest request) {
-	ContentResponse response = (ContentResponse)APIUtils.doRequest(new Content(this.config, request));
-	return response.getResponseData();
+        ContentResponse response = (ContentResponse) APIUtils.doRequest(new Content(this.config, request));
+        return response.getResponseData();
     }
     
     /**
@@ -207,8 +208,10 @@ public class GCExchange {
      * @return Id of uploaded content
      */
     public String uploadContent(UploadFileRequest request){
-	ContentDataResponse response = (ContentDataResponse)APIUtils.doRequestWithParameters(new ContentData(config, request));
-	return response.getResponseData().getContentId();
+        ContentDataResponse response = (ContentDataResponse) APIUtils
+                .doRequestWithParameters(new ContentData(config, request));
+        return response.getResponseData()
+                .getContentId();
     }
     
     /**
@@ -218,8 +221,10 @@ public class GCExchange {
      * @return Id of uploaded reference
      */
     public String uploadContentReference(UploadContentReferenceRequest request){
-	ContentReferenceResponse response = (ContentReferenceResponse)APIUtils.doRequestWithParameters(new ContentReference(config, request));
-	return response.getResponseData().getReferenceId();
+        ContentReferenceResponse response = (ContentReferenceResponse) APIUtils
+                .doRequestWithParameters(new ContentReference(config, request));
+        return response.getResponseData()
+                .getReferenceId();
     }
     
     /**
@@ -228,8 +233,9 @@ public class GCExchange {
      * @return List of XSLT profiles
      */
     public List<String> getContextConfigs(){
-	ContextConfigResponse response = (ContextConfigResponse)APIUtils.doRequest(new ContextConfig(config));
-	return response.getResponseData().getXsltConfigs();
+        ContextConfigResponse response = (ContextConfigResponse) APIUtils.doRequest(new ContextConfig(config));
+        return response.getResponseData()
+                .getXsltConfigs();
     }
     
     /**
@@ -239,8 +245,9 @@ public class GCExchange {
      * @return Static preview url of uploaded context
      */
     public String uploadContext(UploadFileContextRequest request){
-	ContextResponse response = (ContextResponse)APIUtils.doRequestWithParameters(new Context(config, request));
-	return response.getResponseData().getStaticUrl();
+        ContextResponse response = (ContextResponse) APIUtils.doRequestWithParameters(new Context(config, request));
+        return response.getResponseData()
+                .getStaticUrl();
     }
     
     /**
@@ -250,8 +257,8 @@ public class GCExchange {
      * @return Paged list of {@link GCJob}
      */
     public JobsResponseData getJobsList(JobListRequest request) {
-	JobsResponse response = (JobsResponse)APIUtils.doRequest(new Jobs(config, request));
-	return response.getResponseData();
+        JobsResponse response = (JobsResponse) APIUtils.doRequest(new Jobs(config, request));
+        return response.getResponseData();
     }
     
     /**
@@ -261,8 +268,8 @@ public class GCExchange {
      * @return {@link State}
      */
     public State getJobState(Long jobId) {
-	StatusResponse response = (StatusResponse)APIUtils.doRequest(new JobStatus(config, new JobRequest(jobId)));
-	return response.getResponseData();
+        StatusResponse response = (StatusResponse) APIUtils.doRequest(new JobStatus(config, new JobRequest(jobId)));
+        return response.getResponseData();
     }
     
     /**
@@ -272,8 +279,8 @@ public class GCExchange {
      * @return Paged list of {@link GCTask}
      */
     public TasksResponseData getJobTasks(JobRequest jobRequest) {
-	TasksResponse response = (TasksResponse)APIUtils.doRequest(new JobTasks(config, jobRequest));
-	return response.getResponseData();
+        TasksResponse response = (TasksResponse) APIUtils.doRequest(new JobTasks(config, jobRequest));
+        return response.getResponseData();
     }
     
     /**
@@ -283,8 +290,9 @@ public class GCExchange {
      * @return List of {@link WordCountSummary}
      */
     public List<WordCountSummary> getJobWordCount(Long jobId) {
-	JobWordCountResponse response = (JobWordCountResponse)APIUtils.doRequest(new JobWordCount(config, new JobRequest(jobId)));
-	return response.getResponseData();
+        JobWordCountResponse response = (JobWordCountResponse) APIUtils
+                .doRequest(new JobWordCount(config, new JobRequest(jobId)));
+        return response.getResponseData();
     }
     
     /**
@@ -293,8 +301,8 @@ public class GCExchange {
      * @return Paged list of {@link GCSubmission}
      */
     public SubmissionsResponseData getSubmissionsList() {
-	SubmissionsResponse response = (SubmissionsResponse)APIUtils.doRequest(new Submissions(config, null));
-	return response.getResponseData();
+        SubmissionsResponse response = (SubmissionsResponse) APIUtils.doRequest(new Submissions(config, null));
+        return response.getResponseData();
     }
     
     /**
@@ -304,8 +312,8 @@ public class GCExchange {
      * @return Paged list of {@link GCSubmission}
      */
     public SubmissionsResponseData getSubmissionsList(SubmissionsListRequest request) {
-	SubmissionsResponse response = (SubmissionsResponse)APIUtils.doRequest(new Submissions(config, request));
-	return response.getResponseData();
+        SubmissionsResponse response = (SubmissionsResponse) APIUtils.doRequest(new Submissions(config, request));
+        return response.getResponseData();
     }
     
     /**
@@ -315,8 +323,10 @@ public class GCExchange {
      * @return Id of created submission
      */
     public Long createSubmission(SubmissionCreateRequest request) {
-	SubmissionCreateResponse response = (SubmissionCreateResponse)APIUtils.doRequest(new SubmissionCreate(config, request));
-	return response.getResponseData().getSubmissionId();
+        SubmissionCreateResponse response = (SubmissionCreateResponse) APIUtils
+                .doRequest(new SubmissionCreate(config, request));
+        return response.getResponseData()
+                .getSubmissionId();
     }
     
     /**
@@ -326,8 +336,9 @@ public class GCExchange {
      * @return Paged list of {@link GCJob}
      */
     public JobsResponseData getSubmissionJobs(Long submissionId) {
-	JobsResponse response = (JobsResponse)APIUtils.doRequest(new SubmissionJobs(config, new SubmissionRequest(submissionId)));
-	return response.getResponseData();
+        JobsResponse response = (JobsResponse) APIUtils
+                .doRequest(new SubmissionJobs(config, new SubmissionRequest(submissionId)));
+        return response.getResponseData();
     }
     
     /**
@@ -337,8 +348,9 @@ public class GCExchange {
      * @return Submission {@link State}
      */
     public State getSubmissionState(Long submissionId) {
-	StatusResponse response = (StatusResponse)APIUtils.doRequest(new SubmissionStatus(config, new SubmissionRequest(submissionId)));
-	return response.getResponseData();
+        StatusResponse response = (StatusResponse) APIUtils
+                .doRequest(new SubmissionStatus(config, new SubmissionRequest(submissionId)));
+        return response.getResponseData();
     }
     
     /**
@@ -348,8 +360,9 @@ public class GCExchange {
      * @return MessageResponse {@link MessageResponse} response with status and message
      */
     public MessageResponse cancelSubmission(Long submissionId) {
-	MessageResponse response = (MessageResponse)APIUtils.doRequest(new SubmissionCancel(config, new SubmissionRequest(submissionId)));
-	return response;
+        MessageResponse response = (MessageResponse) APIUtils
+                .doRequest(new SubmissionCancel(config, new SubmissionRequest(submissionId)));
+        return response;
     }
     
     /**
@@ -359,8 +372,8 @@ public class GCExchange {
      * @return MessageResponse {@link MessageResponse} response with status and message
      */
     public MessageResponse cancelJob(Long jobId) {
-	MessageResponse response = (MessageResponse)APIUtils.doRequest(new JobCancel(config, new JobRequest(jobId)));
-	return response;
+        MessageResponse response = (MessageResponse) APIUtils.doRequest(new JobCancel(config, new JobRequest(jobId)));
+        return response;
     }
     
     /**
@@ -370,8 +383,9 @@ public class GCExchange {
      * @return {@link SubmissionSubmitResponseData} object which contains submission id and jobs
      */
     public SubmissionSubmitResponseData submitSubmission(SubmissionSubmitRequest request) {
-	SubmissionSubmitResponse response = (SubmissionSubmitResponse)APIUtils.doRequest(new SubmissionSubmit(config, request));
-	return response.getResponseData();
+        SubmissionSubmitResponse response = (SubmissionSubmitResponse) APIUtils
+                .doRequest(new SubmissionSubmit(config, request));
+        return response.getResponseData();
     }
     
     /**
@@ -381,8 +395,8 @@ public class GCExchange {
      * @return Paged list of {@link GCTask}
      */
     public TasksResponseData getSubmissionTasks(SubmissionRequest request) {
-	TasksResponse response = (TasksResponse)APIUtils.doRequest(new SubmissionTasks(config, request));
-	return response.getResponseData();
+        TasksResponse response = (TasksResponse) APIUtils.doRequest(new SubmissionTasks(config, request));
+        return response.getResponseData();
     }
     
     /**
@@ -392,8 +406,10 @@ public class GCExchange {
      * @return List of submission {@link SubmissionWordCountData}
      */
     public List<SubmissionWordCountData> getSubmissionWordCount(Long submissionId) {
-	SubmissionWordCountResponse response = (SubmissionWordCountResponse)APIUtils.doRequest(new SubmissionWordCount(config, new SubmissionRequest(submissionId)));
-	return response.getResponseData().getWordcountData();
+        SubmissionWordCountResponse response = (SubmissionWordCountResponse) APIUtils
+                .doRequest(new SubmissionWordCount(config, new SubmissionRequest(submissionId)));
+        return response.getResponseData()
+                .getWordcountData();
     }
     
     /**
@@ -403,8 +419,8 @@ public class GCExchange {
      * @return Paged list of {@link GCTask}
      */
     public TasksResponseData getTasksList(TaskListRequest request) {
-	TasksResponse response = (TasksResponse)APIUtils.doRequest(new Tasks(config, request));
-	return response.getResponseData();
+        TasksResponse response = (TasksResponse) APIUtils.doRequest(new Tasks(config, request));
+        return response.getResponseData();
     }
     
     /**
@@ -414,8 +430,8 @@ public class GCExchange {
      * @return MessageResponse {@link MessageResponse} response with status and message
      */
     public MessageResponse setTaskError(TaskErrorRequest request) {
-	MessageResponse response = (MessageResponse)APIUtils.doRequest(new TasksError(config, request));
-	return response;
+        MessageResponse response = (MessageResponse) APIUtils.doRequest(new TasksError(config, request));
+        return response;
     }
     
     /**
@@ -425,8 +441,10 @@ public class GCExchange {
      * @return Is success
      */
     public Boolean confirmTask(Long taskId) {
-	TasksConfirmResponse response = (TasksConfirmResponse)APIUtils.doRequest(new TasksConfirm(config, new TaskRequest(taskId)));
-	return response.getResponseData().getIsSuccess();
+        TasksConfirmResponse response = (TasksConfirmResponse) APIUtils
+                .doRequest(new TasksConfirm(config, new TaskRequest(taskId)));
+        return response.getResponseData()
+                .getIsSuccess();
     }
     
     /**
@@ -436,8 +454,10 @@ public class GCExchange {
      * @return  List of confirm cancellation failures. If list is empty, then result is success for all specified task ids
      */
     public List<TaskConfirmCancellationFailure> confirmTaskCancellation(List<Long> taskIds) {
-	TasksConfirmCancellationResponse response = (TasksConfirmCancellationResponse)APIUtils.doRequest(new TasksConfirmCancellation(config, new TasksRequest(taskIds)));
-	return response.getResponseData().getTaskConfirmCancellationFailures();
+        TasksConfirmCancellationResponse response = (TasksConfirmCancellationResponse) APIUtils
+                .doRequest(new TasksConfirmCancellation(config, new TasksRequest(taskIds)));
+        return response.getResponseData()
+                .getTaskConfirmCancellationFailures();
     }
     
     /**
@@ -447,7 +467,7 @@ public class GCExchange {
      * @return Completed task data as InputStream
      */
     public InputStream downloadTask(Long taskId) {
-	return APIUtils.doDownload(new TasksDownload(config, new TaskRequest(taskId)));
+        return APIUtils.doDownload(new TasksDownload(config, new TaskRequest(taskId)));
     }
     
     /**
@@ -458,8 +478,8 @@ public class GCExchange {
      * @throws JsonProcessingException Json generation exception
      */
     public String createJson(Object object) throws JsonProcessingException {
-	ObjectMapper mapper = new ObjectMapper();
-	return mapper.writeValueAsString(object);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
     }
     
     /**
@@ -474,8 +494,8 @@ public class GCExchange {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object parseJson(String json, Class outputClass) throws JsonParseException, JsonMappingException, IOException {
-	ObjectMapper mapper = new ObjectMapper();
-	return mapper.readValue(json, outputClass);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(json, outputClass);
     }
 
 }
