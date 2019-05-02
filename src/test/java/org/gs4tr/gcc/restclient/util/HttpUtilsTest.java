@@ -26,7 +26,8 @@ public class HttpUtilsTest {
     public void openConnection_givenURL_shouldReturnOpenConnection() throws IOException {
         URL mockUrl = PowerMockito.mock(URL.class); // URL is a final class, requires PowerMock
         HttpURLConnection expected = mock(HttpURLConnection.class);
-        PowerMockito.when(mockUrl.openConnection())
+        PowerMockito
+                .when(mockUrl.openConnection())
                 .thenReturn(expected);
 
         HttpURLConnection connection = HttpUtils.openConnection(mockUrl);
