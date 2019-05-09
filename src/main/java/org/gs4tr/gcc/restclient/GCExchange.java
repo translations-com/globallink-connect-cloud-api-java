@@ -81,7 +81,6 @@ import org.gs4tr.gcc.restclient.request.UploadFileContextRequest;
 import org.gs4tr.gcc.restclient.request.UploadFileRequest;
 import org.gs4tr.gcc.restclient.util.APIUtils;
 import org.gs4tr.gcc.restclient.util.StringUtils;
-import org.w3c.dom.DOMException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -119,13 +118,6 @@ public class GCExchange {
 
         if (StringUtils.IsNullOrWhiteSpace(this.config.getBearerToken())) {
             login();
-            try {
-                getConnectors();
-            } catch (DOMException e) {
-                throw new IllegalArgumentException("Error parsing response", e);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Incorrect client_secret_key", e);
-            }
         }
 
     }
