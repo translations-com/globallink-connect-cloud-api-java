@@ -48,7 +48,7 @@ public class APIUtilsTest {
         mockSuccessfulConnection();
 
         PowerMockito.mockStatic(HttpUtils.class);
-        PowerMockito.when(HttpUtils.openConnection(any(URL.class)))
+        PowerMockito.when(HttpUtils.openConnection(any(URL.class), any(GCConfig.class)))
                 .thenReturn(mockConnection);
         PowerMockito.doCallRealMethod()
                 .when(HttpUtils.class);

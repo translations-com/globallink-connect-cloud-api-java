@@ -9,7 +9,7 @@ public class GCLanguageJob {
     @JsonProperty("job_id")
     private Long jobId;
     @JsonProperty("state")
-    private GCJobState state;
+    private Status status;
     @JsonProperty("created_at")
     private Date createdAt;
     @JsonProperty("translated_date")
@@ -21,12 +21,12 @@ public class GCLanguageJob {
 
     }
 
-    public GCJobState getState() {
-	return state;
+    public Status getStatus() {
+	return status;
     }
 
-    public void setState(GCJobState state) {
-	this.state = state;
+    public void setStatus(Status status) {
+	this.status = status;
     }
 
     public Date getCreatedAt() {

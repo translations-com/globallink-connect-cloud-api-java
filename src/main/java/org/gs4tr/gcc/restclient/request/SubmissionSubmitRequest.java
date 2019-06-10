@@ -34,6 +34,10 @@ public class SubmissionSubmitRequest extends GCRequest {
     private Map<String, Object> config;
     @JsonProperty("content_list_locale")
     private List<ContentLocales> contentLocales;
+    @JsonProperty("workflow")
+    private String workflow;
+    @JsonProperty("tags")
+    private List<String> tags;
 
     public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale, List<String> targetLocales,
 	    List<String> contentList) {
@@ -185,6 +189,22 @@ public class SubmissionSubmitRequest extends GCRequest {
 
     public void setContentLocales(List<ContentLocales> contentLocales) {
 	this.contentLocales = contentLocales;
+    }
+
+    public String getWorkflow() {
+	return workflow;
+    }
+
+    public void setWorkflow(String workflow) {
+	this.workflow = workflow;
+    }
+
+    public List<String> getTags() {
+	return tags;
+    }
+
+    public void setTags(List<String> tags) {
+	this.tags = tags;
     }
 
 }

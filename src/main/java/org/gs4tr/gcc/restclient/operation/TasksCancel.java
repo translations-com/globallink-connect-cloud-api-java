@@ -1,21 +1,25 @@
 package org.gs4tr.gcc.restclient.operation;
 
+import java.util.List;
+
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.dto.MessageResponse;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 import org.gs4tr.gcc.restclient.request.TaskRequest;
 
-public class TasksConfirmCancellation extends GCOperation {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class TasksCancel extends GCOperation {
 
     private final TaskRequest request;
     
-    public TasksConfirmCancellation(GCConfig config, TaskRequest request) {
+    public TasksCancel(GCConfig config, TaskRequest request) {
 	super(config);
-	this.request = request;
+	this.request = new TaskRequest(request.getTaskId());
     }
 
-    private static final String REQUEST_URL = "tasks/confirm_cancel";
+    private static final String REQUEST_URL = "tasks/cancel";
     private static final String REQUEST_METHOD = "POST";
 
     @Override
@@ -33,10 +37,6 @@ public class TasksConfirmCancellation extends GCOperation {
 	return getRequest();
     }
 
-    public TaskRequest getRequest() {
-	return request;
-    }
-
     @Override
     public Class<? extends GCResponse> getResponseClass() {
 	return MessageResponse.class;
@@ -45,6 +45,10 @@ public class TasksConfirmCancellation extends GCOperation {
     @Override
     public Boolean allowErrorResponse(){
 	return true;
+    }
+
+    public TaskRequest getRequest() {
+	return request;
     }
 
 }

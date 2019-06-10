@@ -1,5 +1,7 @@
 package org.gs4tr.gcc.restclient.request;
 
+import java.util.List;
+
 import org.gs4tr.gcc.restclient.model.SubmissionStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,8 +20,10 @@ public class SubmissionsListRequest extends PageableRequest {
     private Integer isError;
     @JsonProperty("is_overdue")
     private Integer isOverdue;
-    @JsonProperty("submissionName")
+    @JsonProperty("submission_name")
     private String submissionName;
+    @JsonProperty("tags")
+    private List<String> tags;
 
     public SubmissionsListRequest() {
 
@@ -99,6 +103,14 @@ public class SubmissionsListRequest extends PageableRequest {
 
     public void setIsOverdue(Integer isOverdue) {
 	this.isOverdue = isOverdue;
+    }
+
+    public List<String> getTags() {
+	return tags;
+    }
+
+    public void setTags(List<String> tags) {
+	this.tags = tags;
     }
 
 }

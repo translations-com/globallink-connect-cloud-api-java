@@ -4,7 +4,6 @@ import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.operation.JobStatus.StatusResponse;
 import org.gs4tr.gcc.restclient.request.GCRequest;
-import org.gs4tr.gcc.restclient.request.JobRequest;
 import org.gs4tr.gcc.restclient.request.SubmissionRequest;
 
 public class SubmissionStatus  extends GCOperation {

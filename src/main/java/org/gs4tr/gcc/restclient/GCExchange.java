@@ -10,7 +10,7 @@ import org.gs4tr.gcc.restclient.model.GCFile;
 import org.gs4tr.gcc.restclient.model.GCJob;
 import org.gs4tr.gcc.restclient.model.GCSubmission;
 import org.gs4tr.gcc.restclient.model.GCTask;
-import org.gs4tr.gcc.restclient.model.State;
+import org.gs4tr.gcc.restclient.model.Status;
 import org.gs4tr.gcc.restclient.model.SubmissionWordCountData;
 import org.gs4tr.gcc.restclient.model.WordCountSummary;
 import org.gs4tr.gcc.restclient.operation.Connectors;
@@ -18,6 +18,9 @@ import org.gs4tr.gcc.restclient.operation.Connectors.ConnectorsResponse;
 import org.gs4tr.gcc.restclient.operation.ConnectorsConfig;
 import org.gs4tr.gcc.restclient.operation.ConnectorsConfig.ConnectorsConfigResponse;
 import org.gs4tr.gcc.restclient.operation.ConnectorsConfig.ConnectorsConfigResponseData;
+import org.gs4tr.gcc.restclient.operation.ConnectorsDataStoreGet;
+import org.gs4tr.gcc.restclient.operation.ConnectorsDataStoreGet.ConnectorsDataStoreGetResponse;
+import org.gs4tr.gcc.restclient.operation.ConnectorsDataStorePost;
 import org.gs4tr.gcc.restclient.operation.Content;
 import org.gs4tr.gcc.restclient.operation.Content.ContentResponse;
 import org.gs4tr.gcc.restclient.operation.Content.ContentResponseData;
@@ -58,13 +61,13 @@ import org.gs4tr.gcc.restclient.operation.Submissions.SubmissionsResponseData;
 import org.gs4tr.gcc.restclient.operation.Tasks;
 import org.gs4tr.gcc.restclient.operation.Tasks.TasksResponse;
 import org.gs4tr.gcc.restclient.operation.Tasks.TasksResponseData;
+import org.gs4tr.gcc.restclient.operation.TasksCancel;
 import org.gs4tr.gcc.restclient.operation.TasksConfirm;
 import org.gs4tr.gcc.restclient.operation.TasksConfirm.TasksConfirmResponse;
 import org.gs4tr.gcc.restclient.operation.TasksConfirmCancellation;
-import org.gs4tr.gcc.restclient.operation.TasksConfirmCancellation.TaskConfirmCancellationFailure;
-import org.gs4tr.gcc.restclient.operation.TasksConfirmCancellation.TasksConfirmCancellationResponse;
 import org.gs4tr.gcc.restclient.operation.TasksDownload;
 import org.gs4tr.gcc.restclient.operation.TasksError;
+import org.gs4tr.gcc.restclient.request.DataStoreRequest;
 import org.gs4tr.gcc.restclient.request.JobListRequest;
 import org.gs4tr.gcc.restclient.request.JobRequest;
 import org.gs4tr.gcc.restclient.request.PageableRequest;
@@ -75,7 +78,6 @@ import org.gs4tr.gcc.restclient.request.SubmissionsListRequest;
 import org.gs4tr.gcc.restclient.request.TaskErrorRequest;
 import org.gs4tr.gcc.restclient.request.TaskListRequest;
 import org.gs4tr.gcc.restclient.request.TaskRequest;
-import org.gs4tr.gcc.restclient.request.TasksRequest;
 import org.gs4tr.gcc.restclient.request.UploadContentReferenceRequest;
 import org.gs4tr.gcc.restclient.request.UploadFileContextRequest;
 import org.gs4tr.gcc.restclient.request.UploadFileRequest;
@@ -180,6 +182,27 @@ public class GCExchange {
     }
     
     /**
+     * Retrieve key=value data which was stored in connector
+     * 
+     * @return String with data
+     */
+    public String getConnectorsDataStore() {
+	ConnectorsDataStoreGetResponse response = (ConnectorsDataStoreGetResponse)APIUtils.doRequest(new ConnectorsDataStoreGet(config));
+	return response.getResponseData()!=null?response.getResponseData().getDataStoreString():null;
+    }
+    
+    /**
+     * Store any custom string data in connector
+     * 
+     * @param dataStore String to be stored. Json format is preferred
+     * @return {@link MessageResponse}
+     */
+    public MessageResponse setConnectorsDataStore(String dataStore) {
+	MessageResponse response = (MessageResponse)APIUtils.doRequest(new ConnectorsDataStorePost(config, new DataStoreRequest(dataStore)));
+	return response;
+    }
+    
+    /**
      * Returns a list of all content objects that have been uploaded for the specified connector that have not yet been submitted
      * 
      * @return Paged list of {@link GCFile}
@@ -258,9 +281,9 @@ public class GCExchange {
      * Get the status of the Job
      * 
      * @param jobId Job Id
-     * @return {@link State}
+     * @return {@link Status}
      */
-    public State getJobState(Long jobId) {
+    public Status getJobStatus(Long jobId) {
 	StatusResponse response = (StatusResponse)APIUtils.doRequest(new JobStatus(config, new JobRequest(jobId)));
 	return response.getResponseData();
     }
@@ -334,9 +357,9 @@ public class GCExchange {
      * Get the status of the submission
      * 
      * @param submissionId Submission Id
-     * @return Submission {@link State}
+     * @return Submission {@link Status}
      */
-    public State getSubmissionState(Long submissionId) {
+    public Status getSubmissionStatus(Long submissionId) {
 	StatusResponse response = (StatusResponse)APIUtils.doRequest(new SubmissionStatus(config, new SubmissionRequest(submissionId)));
 	return response.getResponseData();
     }
@@ -360,6 +383,17 @@ public class GCExchange {
      */
     public MessageResponse cancelJob(Long jobId) {
 	MessageResponse response = (MessageResponse)APIUtils.doRequest(new JobCancel(config, new JobRequest(jobId)));
+	return response;
+    }
+    
+    /**
+     * Cancelled task
+     * 
+     * @param taskId Task Id to cancel
+     * @return MessageResponse {@link MessageResponse} response with status and message
+     */
+    public MessageResponse cancelTask(Long taskId) {
+	MessageResponse response = (MessageResponse)APIUtils.doRequest(new TasksCancel(config, new TaskRequest(taskId)));
 	return response;
     }
     
@@ -432,12 +466,12 @@ public class GCExchange {
     /**
      * Confirm that cancelled task is processed on client side
      * 
-     * @param taskIds List of Task Ids to confirm cancellation
-     * @return  List of confirm cancellation failures. If list is empty, then result is success for all specified task ids
+     * @param taskId Task Ids to confirm cancellation
+     * @return MessageResponse {@link MessageResponse} response with status and message
      */
-    public List<TaskConfirmCancellationFailure> confirmTaskCancellation(List<Long> taskIds) {
-	TasksConfirmCancellationResponse response = (TasksConfirmCancellationResponse)APIUtils.doRequest(new TasksConfirmCancellation(config, new TasksRequest(taskIds)));
-	return response.getResponseData().getTaskConfirmCancellationFailures();
+    public MessageResponse confirmTaskCancellation(Long taskId) {
+	MessageResponse response = (MessageResponse)APIUtils.doRequest(new TasksConfirmCancellation(config, new TaskRequest(taskId)));
+	return response;
     }
     
     /**

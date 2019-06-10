@@ -3,19 +3,18 @@ package org.gs4tr.gcc.restclient.operation;
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.dto.MessageResponse;
+import org.gs4tr.gcc.restclient.request.DataStoreRequest;
 import org.gs4tr.gcc.restclient.request.GCRequest;
-import org.gs4tr.gcc.restclient.request.TaskRequest;
 
-public class TasksConfirmCancellation extends GCOperation {
+public class ConnectorsDataStorePost extends GCOperation {
+    private final DataStoreRequest request;
 
-    private final TaskRequest request;
-    
-    public TasksConfirmCancellation(GCConfig config, TaskRequest request) {
+    public ConnectorsDataStorePost(GCConfig config, DataStoreRequest dataStore) {
 	super(config);
-	this.request = request;
+	this.request = dataStore;
     }
-
-    private static final String REQUEST_URL = "tasks/confirm_cancel";
+    
+    private static final String REQUEST_URL = "connectors/key_data_store";
     private static final String REQUEST_METHOD = "POST";
 
     @Override
@@ -33,18 +32,12 @@ public class TasksConfirmCancellation extends GCOperation {
 	return getRequest();
     }
 
-    public TaskRequest getRequest() {
-	return request;
-    }
-
     @Override
     public Class<? extends GCResponse> getResponseClass() {
 	return MessageResponse.class;
     }
     
-    @Override
-    public Boolean allowErrorResponse(){
-	return true;
+    public DataStoreRequest getRequest() {
+	return request;
     }
-
 }

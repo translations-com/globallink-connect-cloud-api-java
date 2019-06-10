@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GCFile {
+public class GCFile extends GCBasicModel {
     @JsonProperty("_id")
     private String id;
     @JsonProperty("connector_instance_id")

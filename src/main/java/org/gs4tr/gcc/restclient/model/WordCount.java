@@ -8,7 +8,7 @@ public class WordCount {
     @JsonProperty("target_locale")
     private Locale targetLocale;
     @JsonProperty("current_state")
-    private String currentState;
+    private String currentStatus;
     @JsonProperty("wordcount_summary")
     private List<WordCountSummary> wordcountSummary;
 
@@ -24,12 +24,12 @@ public class WordCount {
 	this.targetLocale = targetLocale;
     }
 
-    public String getCurrentState() {
-	return currentState;
+    public String getCurrentStatus() {
+	return currentStatus;
     }
 
-    public void setCurrentState(String currentState) {
-	this.currentState = currentState;
+    public void setCurrentStatus(String currentStatus) {
+	this.currentStatus = currentStatus;
     }
 
     public List<WordCountSummary> getWordcountSummary() {

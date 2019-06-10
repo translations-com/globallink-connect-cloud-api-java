@@ -11,11 +11,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
-import org.gs4tr.gcc.restclient.dto.PageableResponseData;
 import org.gs4tr.gcc.restclient.operation.Connectors;
 import org.gs4tr.gcc.restclient.operation.GCOperation;
 import org.gs4tr.gcc.restclient.operation.SessionStart;
@@ -26,29 +22,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class APIUtils {
 
-    public static final String LOGIN = "start_session";
-    public static final String LOGOUT = "end_session";
-    public static final String FILE_TYPES = "connector/config/file_types";
-    public static final String REQUEST_LOCALES = "connector/config/locales";
-    public static final String REQUEST_FILE_TYPES = "connector/config/file_types";
-    public static final String REQUEST_JOB_OPTIONS = "connector/config/job_options";
-    public static final String REQUEST_FILE_UPLOAD = "file/upload";
-    public static final String REQUEST_FILE_CONTEXT_UPLOAD = "file/context/upload";
-    public static final String REQUEST_TASK_LIST = "task/list";
-    public static final String REQUEST_TASK_CONFIRM_DELIVERY = "task/confirm_delivery";
-    public static final String REQUEST_TASK_UNSUBMITTED = "file/unsubmitted";
-    public static final String DOWNLOAD_TASK = "task/download";
-    public static final String REQUEST_JOB_LIST = "job/list";
-    public static final String REQUEST_JOB_LIST_LOCALE = "locale_job/list";
-    public static final String REQUEST_JOB_SUBMIT_FILES = "job/submit/files";
-    public static final String REQUEST_JOB_SUBMIT_NODES = "job/submit/nodes";
-    public static final String REQUEST_JOB_WORDCOUNT = "job/wordcount";
-
     public static GCResponse doRequestWithParameters(GCOperation operation) {
 
 	MultipartUtility multipart = null;
 	try {
-            multipart = new MultipartUtility(operation.getRequestUrl(), operation.getConfig());
+	    multipart = new MultipartUtility(operation.getRequestUrl(), operation.getConfig());
 	    GCRequest request = operation.getRequestObject();
 	    if (request != null && request.getParameters() != null) {
 		Map<String, Object> parameters = request.getParameters();
@@ -62,7 +40,7 @@ public class APIUtils {
 		    if (key.equals("preview_file") || key.equals("file")) {
 			m2.put(key, entry.getValue());
 		    } else {
-			if(!key.equals("ignore_file_name")){
+			if (!key.equals("ignore_file_name")) {
 			    multipart.addFormField(key, "" + entry.getValue());
 			}
 		    }
@@ -73,14 +51,15 @@ public class APIUtils {
 		    if (parameters.containsKey("name")) {
 			multipart.addFilePart(entry.getKey(), (byte[]) entry.getValue(), "" + parameters.get("name"));
 		    } else if (parameters.containsKey("ignore_file_name")) {
-			multipart.addFilePart(entry.getKey(), (byte[]) entry.getValue(), "" + parameters.get("ignore_file_name"));
+			multipart.addFilePart(entry.getKey(), (byte[]) entry.getValue(),
+				"" + parameters.get("ignore_file_name"));
 		    } else {
 			multipart.addFilePart(entry.getKey(), (byte[]) entry.getValue(), "unknown");
 		    }
 		}
 	    }
 
-	    HttpsURLConnection connection = multipart.finish();
+	    HttpURLConnection connection = multipart.finish();
 
 	    String response = null;
 	    if (connection.getResponseCode() > 299) {
@@ -109,81 +88,90 @@ public class APIUtils {
     }
 
     public static InputStream doDownload(GCOperation operation) {
-        return sendRequest(operation);
+	return sendRequest(operation);
     }
 
     public static Object doRequest(GCOperation operation) {
-        ObjectMapper mapper = new ObjectMapper();
-        String response = null;
-        InputStream inputStream = sendRequest(operation);
-        try {
-            response = StringUtils.toString(inputStream);
-        } catch (IOException e) {
-            throw new IllegalStateException("Error reading response. " + e.getMessage(), e);
-        }
-        try {
-            GCResponse responseObj = mapper.readValue(response, operation.getResponseClass());
-            if (responseObj.getStatus() == null || !responseObj.getStatus()
-                    .equals(200)) {
-                if (responseObj.getStatus()
-                        .equals(404) && responseObj.getResponseData() instanceof PageableResponseData) {
+	String response = null;
 
-                } else {
-                    throw new IllegalStateException(
-                            "Error " + responseObj.getStatus() + ":" + responseObj.getMessage());
-                }
-            }
-            return responseObj;
-        } catch (IOException e) {
-            throw new DOMException(DOMException.INVALID_STATE_ERR, "Error parsing response. " + e.getMessage());
-        }
+	InputStream inputStream = sendRequest(operation);
+	try {
+	    response = StringUtils.toString(inputStream);
+	    operation.getConfig().getLogger().info("Response:"+response);
+	} catch (IOException e) {
+	    throw new IllegalStateException("Error reading response. " + e.getMessage(), e);
+	}
+	try {
+	    ObjectMapper mapper = new ObjectMapper();
+	    GCResponse responseObj = mapper.readValue(response, operation.getResponseClass());
+	    // not checking if responseObj.getStatus() is 200 or not. some
+	    // operations can return 400 or 404 as result
+	    return responseObj;
+	} catch (IOException e) {
+	    throw new DOMException(DOMException.INVALID_STATE_ERR, "Error parsing response. " + e.getMessage());
+	}
     }
 
     private static InputStream sendRequest(GCOperation operation) {
-        ObjectMapper mapper = new ObjectMapper();
-        GCConfig config = operation.getConfig();
-        try {
-            HttpURLConnection connection = openConnection(operation.getRequestUrl());
-            connection.setRequestMethod(operation.getRequestMethod());
-            if (!(operation instanceof Connectors) && !(operation instanceof SessionStart)) {
-                if (config.getConnectorKey() == null) {
-                    throw new IllegalStateException(
-                            "Connector key is required. You can obtain connector key using 'Connectors' operation");
-                }
-                connection.setRequestProperty("connector_key", config.getConnectorKey());
-            }
-            connection.setRequestProperty("Authorization", "Bearer " + config.getBearerToken());
-            connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-            addHeaders(connection, config.getCustomHeaders());
-            if (operation.getRequestMethod()
-                    .equals("GET")) {
-                connection.setDoOutput(false);
-            } else {
-                connection.setDoOutput(true);
-                if (operation.getRequestObject() != null) {
-                    OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(),
-                            Charset.forName("UTF-8"));
-                    String json = mapper.writeValueAsString(operation.getRequestObject());
-                    out.write(json);
-                    out.close();
-                }
-            }
+	HttpURLConnection connection = null;
 
-            if (connection.getResponseCode() > 299) {
-                String response = StringUtils.toString(connection.getErrorStream());
-                if (connection.getResponseCode() > 499) {
-                    if (connection.getResponseCode() == 503) {
-                        throw new IllegalStateException("Service Temporarily Unavailable");
-                    } else {
-                        throw new IllegalStateException(
-                                "Server returned HTTP code " + connection.getResponseCode() + ". " + response);
-                    }
-                }
-            }
-            return connection.getInputStream();
-        } catch (IOException e) {
-            throw new IllegalStateException("Error sending request. " + e.getMessage(), e);
-        }
+	try {
+	    connection = openConnection(operation.getRequestUrl(), operation.getConfig());
+	    connection.setRequestMethod(operation.getRequestMethod());
+	    if (!(operation instanceof Connectors) && !(operation instanceof SessionStart)) {
+		if (operation.getConfig().getConnectorKey() == null) {
+		    throw new IllegalStateException(
+			    "Connector key is required. You can obtain connector key using 'Connectors' operation");
+		}
+		connection.setRequestProperty("connector_key", operation.getConfig().getConnectorKey());
+	    }
+	    connection.setRequestProperty("Authorization", "Bearer " + operation.getConfig().getBearerToken());
+	    connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+	    addHeaders(connection, operation.getConfig().getCustomHeaders());
+
+	    if (operation.getRequestMethod().equals("GET")) {
+		connection.setDoOutput(false);
+		operation.getConfig().getLogger().info("Request url:"+operation.getRequestUrl());
+	    } else {
+		connection.setDoOutput(true);
+		OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(),
+			    Charset.forName("UTF-8"));
+		String json = operation.getRequestJson();
+		if (operation.getRequestObject() != null) {
+		    ObjectMapper mapper = new ObjectMapper();
+		    json = mapper.writeValueAsString(operation.getRequestObject());
+		}
+		operation.getConfig().getLogger().info("Request url:"+operation.getRequestUrl()+". Json:"+json);
+		out.write(json);
+		out.close();
+	    }
+
+	    if (connection.getResponseCode() > 299) {
+		if (connection.getErrorStream() != null) {
+		    if (connection.getResponseCode() > 499) {
+			if (connection.getResponseCode() == 503) {
+			    throw new IllegalStateException("Service Temporarily Unavailable");
+			} else {
+			    throw new IllegalStateException(
+				    "Server returned HTTP code " + connection.getResponseCode());
+			}
+		    } else {
+			if (operation.allowErrorResponse()) {
+			    return connection.getErrorStream();
+			} else {
+			    throw new IllegalStateException(
+				    "Error sending request. " + StringUtils.toString(connection.getErrorStream()));
+			}
+		    }
+		}
+		throw new IllegalStateException("Error sending request. " + connection.getResponseMessage() + "("
+			+ connection.getResponseCode() + ")");
+	    }
+
+	    return connection.getInputStream();
+	} catch (IOException e) {
+	    throw new IllegalStateException("Error sending request. " + e.getMessage(), e);
+	}
     }
 
 }

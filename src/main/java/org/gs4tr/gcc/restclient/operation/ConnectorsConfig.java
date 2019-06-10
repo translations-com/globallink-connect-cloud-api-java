@@ -61,6 +61,8 @@ public class ConnectorsConfig extends GCOperation {
 	private List<LocaleConfig> supportedLocales;
 	@JsonProperty("file_types")
 	private List<String> fileTypes;
+	@JsonProperty("workflows")
+	private List<String> workflows;
 	@JsonProperty("submission_options")
 	private ConnectorsConfigSubmissionOptions submissionOptions;
 
@@ -88,12 +90,23 @@ public class ConnectorsConfig extends GCOperation {
 	    this.submissionOptions = submissionOptions;
 	}
 
+	public List<String> getWorkflows() {
+	    return workflows;
+	}
+
+	public void setWorkflows(List<String> workflows) {
+	    this.workflows = workflows;
+	}
+
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ConnectorsConfigSubmissionOptions {
 	@JsonProperty("attributes")
 	private List<GCAttribute> attributes;
+	
+	@JsonProperty("config")
+	private List<GCAttribute> config;
 
 	public List<GCAttribute> getAttributes() {
 	    return attributes;
@@ -101,6 +114,14 @@ public class ConnectorsConfig extends GCOperation {
 
 	public void setAttributes(List<GCAttribute> attributes) {
 	    this.attributes = attributes;
+	}
+
+	public List<GCAttribute> getConfig() {
+	    return config;
+	}
+
+	public void setConfig(List<GCAttribute> config) {
+	    this.config = config;
 	}
 
     }

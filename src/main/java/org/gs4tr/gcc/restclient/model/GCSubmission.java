@@ -2,13 +2,14 @@ package org.gs4tr.gcc.restclient.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GCSubmission extends GCBasicModel {
 
     @JsonProperty("state")
-    private State state;
+    private Status status;
     @JsonProperty("submitter")
     private String submitter;
     @JsonProperty("created_at")
@@ -29,17 +30,23 @@ public class GCSubmission extends GCBasicModel {
     private Boolean isError;
     @JsonProperty("is_overdue")
     private Boolean isOverdue;
+    @JsonProperty("config")
+    private Map<String, Object> config;
+    @JsonProperty("attributes")
+    private Map<String, Object> attributes;
+    @JsonProperty("tags")
+    private List<String> tags;
 
     public GCSubmission() {
 
     }
 
-    public State getState() {
-	return state;
+    public Status getStatus() {
+	return status;
     }
 
-    public void setState(State state) {
-	this.state = state;
+    public void setStatus(Status status) {
+	this.status = status;
     }
 
     public String getSubmitter() {
@@ -120,6 +127,30 @@ public class GCSubmission extends GCBasicModel {
 
     public void setIsOverdue(Boolean isOverdue) {
         this.isOverdue = isOverdue;
+    }
+
+    public Map<String, Object> getConfig() {
+	return config;
+    }
+
+    public void setConfig(Map<String, Object> config) {
+	this.config = config;
+    }
+
+    public Map<String, Object> getAttributes() {
+	return attributes;
+    }
+
+    public void setAttributes(Map<String, Object> attributes) {
+	this.attributes = attributes;
+    }
+
+    public List<String> getTags() {
+	return tags;
+    }
+
+    public void setTags(List<String> tags) {
+	this.tags = tags;
     }
 
 }

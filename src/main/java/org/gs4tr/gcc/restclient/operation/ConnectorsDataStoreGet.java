@@ -2,22 +2,17 @@ package org.gs4tr.gcc.restclient.operation;
 
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
-import org.gs4tr.gcc.restclient.model.Status;
+import org.gs4tr.gcc.restclient.request.DataStoreRequest;
 import org.gs4tr.gcc.restclient.request.GCRequest;
-import org.gs4tr.gcc.restclient.request.JobRequest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JobStatus extends GCOperation {
-
-    private final JobRequest request;
-
-    public JobStatus(GCConfig config, JobRequest request) {
+public class ConnectorsDataStoreGet extends GCOperation {
+    public ConnectorsDataStoreGet(GCConfig config) {
 	super(config);
-	this.request = request;
     }
 
-    private static final String REQUEST_URL = "jobs/status";
+    private static final String REQUEST_URL = "connectors/key_data_store";
     private static final String REQUEST_METHOD = "GET";
 
     @Override
@@ -32,29 +27,26 @@ public class JobStatus extends GCOperation {
 
     @Override
     public GCRequest getRequestObject() {
-	return getRequest();
+	return null;
     }
 
     @Override
     public Class<? extends GCResponse> getResponseClass() {
-	return StatusResponse.class;
+	return ConnectorsDataStoreGetResponse.class;
     }
 
-    public JobRequest getRequest() {
-	return request;
-    }
-
-    public static class StatusResponse extends GCResponse {
+    public static class ConnectorsDataStoreGetResponse extends GCResponse {
 
 	@JsonProperty("response_data")
-	private Status responseData;
+	private DataStoreRequest dataStore;
 
-	public Status getResponseData() {
-	    return responseData;
+	public void setResponseData(DataStoreRequest dataStore) {
+	    this.dataStore = dataStore;
 	}
 
-	public void setResponseData(Status responseData) {
-	    this.responseData = responseData;
+	@Override
+	public DataStoreRequest getResponseData() {
+	    return dataStore;
 	}
 
     }

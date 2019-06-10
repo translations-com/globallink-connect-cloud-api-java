@@ -1,6 +1,7 @@
 package org.gs4tr.gcc.restclient.model;
 
 import java.util.Date;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,6 +41,20 @@ public class GCTask {
     private Boolean isError;
     @JsonProperty("confirm_cancel")
     private Boolean isCancelConfirmed;
+    
+    @JsonProperty("public_preview_url")
+    private String publicPreviewUrl;
+    @JsonProperty("context_url")
+    private String contextUrl;
+    @JsonProperty("submitter")
+    private String submitter;
+    @JsonProperty("path")
+    private String path;
+    @JsonProperty("sequence_number")
+    private Long sequenceNumber;
+    @JsonProperty("node_metadata")
+    private Map<String, Object> nodeMetadata;
+    
 
     public GCTask() {
 
@@ -173,4 +188,52 @@ public class GCTask {
 	this.isCancelConfirmed = isCancelConfirmed;
     }
 
+    public String getPublicPreviewUrl() {
+        return publicPreviewUrl;
+    }
+
+    public void setPublicPreviewUrl(String publicPreviewUrl) {
+        this.publicPreviewUrl = publicPreviewUrl;
+    }
+
+    public String getContextUrl() {
+        return contextUrl;
+    }
+
+    public void setContextUrl(String contextUrl) {
+        this.contextUrl = contextUrl;
+    }
+
+    public String getSubmitter() {
+        return submitter;
+    }
+
+    public void setSubmitter(String submitter) {
+        this.submitter = submitter;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Long getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(Long sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
+    public Map<String, Object> getNodeMetadata() {
+	return nodeMetadata;
+    }
+
+    public void setNodeMetadata(Map<String, Object> nodeMetadata) {
+	this.nodeMetadata = nodeMetadata;
+    }
+    
 }

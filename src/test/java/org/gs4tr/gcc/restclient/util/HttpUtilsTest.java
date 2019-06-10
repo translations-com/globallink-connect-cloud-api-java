@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.gs4tr.gcc.restclient.GCConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -25,12 +26,13 @@ public class HttpUtilsTest {
     @Test
     public void openConnection_givenURL_shouldReturnOpenConnection() throws IOException {
         URL mockUrl = PowerMockito.mock(URL.class); // URL is a final class, requires PowerMock
+        GCConfig config = PowerMockito.mock(GCConfig.class);
         HttpURLConnection expected = mock(HttpURLConnection.class);
         PowerMockito
                 .when(mockUrl.openConnection())
                 .thenReturn(expected);
 
-        HttpURLConnection connection = HttpUtils.openConnection(mockUrl);
+        HttpURLConnection connection = HttpUtils.openConnection(mockUrl, config);
 
         assertEquals("Unknown connection returned by 'openConnection'", expected, connection);
     }

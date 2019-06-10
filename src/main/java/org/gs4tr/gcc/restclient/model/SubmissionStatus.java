@@ -1,9 +1,9 @@
 package org.gs4tr.gcc.restclient.model;
 
 public enum SubmissionStatus {
-    InPreProcess("In Pre-process"), Started("Started"), Analyzed("Analyzed"), AwaitingApproval(
-	    "Awaiting Approval"), AwaitingQuoteApproval("Awaiting Quote Approval"), InProgress(
-		    "In Progress"), Review("Review"), Completed("Completed"), Delivered("Delivered");
+    PreProcess("Pre-process"), Started("Started"), Analyzed("Analyzed"), AwaitingApproval(
+	    "Awaiting Approval"), AwaitingQuoteApproval("Awaiting Quote Approval"), Review("Review"), 
+    	Approval("Approval"), Translate("Translate"), Completed("Completed"), Delivered("Delivered");
 
     private String value;
 

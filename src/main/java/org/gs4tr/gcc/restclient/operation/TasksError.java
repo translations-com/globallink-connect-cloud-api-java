@@ -37,6 +37,11 @@ public class TasksError extends GCOperation {
     public Class<? extends GCResponse> getResponseClass() {
 	return MessageResponse.class;
     }
+    
+    @Override
+    public Boolean allowErrorResponse(){
+	return true;
+    }
 
     public TaskErrorRequest getRequest() {
 	return request;

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GCJob {
     @JsonProperty("state")
-    private GCJobState state;
+    private Status status;
     @JsonProperty("submitter")
     private String submitter;
     @JsonProperty("created_at")
@@ -44,12 +44,12 @@ public class GCJob {
 
     }
 
-    public GCJobState getState() {
-	return state;
+    public Status getStatus() {
+	return status;
     }
 
-    public void setState(GCJobState state) {
-	this.state = state;
+    public void setStatus(Status status) {
+	this.status = status;
     }
 
     public String getSubmitter() {

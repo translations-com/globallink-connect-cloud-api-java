@@ -27,6 +27,14 @@ public abstract class GCOperation {
     public abstract Class<? extends GCResponse> getResponseClass();
 
     public abstract String getRequestMethod();
+    
+    public Boolean allowErrorResponse(){
+	return false;
+    }
+    
+    public String getRequestJson(){
+	return null;
+    }
 
     public URL getRequestUrl() throws MalformedURLException {
 	if (getRequestObject() != null && getRequestMethod().equalsIgnoreCase("GET")) {
