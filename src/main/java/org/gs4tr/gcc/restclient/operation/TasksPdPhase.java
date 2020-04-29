@@ -2,20 +2,22 @@ package org.gs4tr.gcc.restclient.operation;
 
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
-import org.gs4tr.gcc.restclient.dto.MessageResponse;
+import org.gs4tr.gcc.restclient.model.PdPhase;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 import org.gs4tr.gcc.restclient.request.TaskRequest;
 
-public class TasksConfirmCancellation extends GCOperation {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class TasksPdPhase extends GCOperation {
 
 	private final TaskRequest request;
 
-	public TasksConfirmCancellation(GCConfig config, TaskRequest request) {
+	public TasksPdPhase(GCConfig config, TaskRequest request) {
 		super(config);
 		this.request = request;
 	}
 
-	private static final String REQUEST_URL = "tasks/confirm_cancel";
+	private static final String REQUEST_URL = "tasks/pdphase";
 	private static final String REQUEST_METHOD = "POST";
 
 	@Override
@@ -33,18 +35,32 @@ public class TasksConfirmCancellation extends GCOperation {
 		return getRequest();
 	}
 
-	public TaskRequest getRequest() {
-		return request;
-	}
-
 	@Override
 	public Class<? extends GCResponse> getResponseClass() {
-		return MessageResponse.class;
+		return PdPhaseResponse.class;
 	}
 
 	@Override
 	public Boolean allowErrorResponse() {
-		return true;
+		return false;
 	}
 
+	public TaskRequest getRequest() {
+		return request;
+	}
+
+	public static class PdPhaseResponse extends GCResponse {
+
+		@JsonProperty("response_data")
+		private PdPhase responseData;
+
+		public PdPhase getResponseData() {
+			return responseData;
+		}
+
+		public void setResponseData(PdPhase responseData) {
+			this.responseData = responseData;
+		}
+
+	}
 }

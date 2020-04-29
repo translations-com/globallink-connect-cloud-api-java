@@ -1,54 +1,50 @@
 package org.gs4tr.gcc.restclient.operation;
 
-import java.util.List;
-
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.dto.MessageResponse;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 import org.gs4tr.gcc.restclient.request.TaskRequest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class TasksCancel extends GCOperation {
 
-    private final TaskRequest request;
-    
-    public TasksCancel(GCConfig config, TaskRequest request) {
-	super(config);
-	this.request = new TaskRequest(request.getTaskId());
-    }
+	private final TaskRequest request;
 
-    private static final String REQUEST_URL = "tasks/cancel";
-    private static final String REQUEST_METHOD = "POST";
+	public TasksCancel(GCConfig config, TaskRequest request) {
+		super(config);
+		this.request = request;
+	}
 
-    @Override
-    public String getRequestMethod() {
-	return REQUEST_METHOD;
-    }
+	private static final String REQUEST_URL = "tasks/cancel";
+	private static final String REQUEST_METHOD = "POST";
 
-    @Override
-    protected String getApiUrl() {
-	return REQUEST_URL;
-    }
+	@Override
+	public String getRequestMethod() {
+		return REQUEST_METHOD;
+	}
 
-    @Override
-    public GCRequest getRequestObject() {
-	return getRequest();
-    }
+	@Override
+	protected String getApiUrl() {
+		return REQUEST_URL;
+	}
 
-    @Override
-    public Class<? extends GCResponse> getResponseClass() {
-	return MessageResponse.class;
-    }
-    
-    @Override
-    public Boolean allowErrorResponse(){
-	return true;
-    }
+	@Override
+	public GCRequest getRequestObject() {
+		return getRequest();
+	}
 
-    public TaskRequest getRequest() {
-	return request;
-    }
+	@Override
+	public Class<? extends GCResponse> getResponseClass() {
+		return MessageResponse.class;
+	}
+
+	@Override
+	public Boolean allowErrorResponse() {
+		return true;
+	}
+
+	public TaskRequest getRequest() {
+		return request;
+	}
 
 }
