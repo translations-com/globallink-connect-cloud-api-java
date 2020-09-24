@@ -11,46 +11,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Connectors extends GCOperation {
 
-    public Connectors(GCConfig config) {
-	super(config);
-    }
-
-    private static final String REQUEST_URL = "connectors";
-    private static final String REQUEST_METHOD = "GET";
-
-    @Override
-    public String getRequestMethod() {
-	return REQUEST_METHOD;
-    }
-
-    @Override
-    protected String getApiUrl() {
-	return REQUEST_URL;
-    }
-
-    @Override
-    public GCRequest getRequestObject() {
-	return null;
-    }
-
-    @Override
-    public Class<? extends GCResponse> getResponseClass() {
-	return ConnectorsResponse.class;
-    }
-
-    public static class ConnectorsResponse extends GCResponse {
-
-	@JsonProperty("response_data")
-	private List<Connector> connectors;
-
-	public List<Connector> getResponseData() {
-	    return connectors;
+	public Connectors(GCConfig config) {
+		super(config);
 	}
 
-	public void setResponseData(List<Connector> connectors) {
-	    this.connectors = connectors;
+	private static final String REQUEST_URL = "connector/list";
+	private static final String REQUEST_METHOD = "GET";
+
+	@Override
+	public String getRequestMethod() {
+		return REQUEST_METHOD;
 	}
 
-    }
+	@Override
+	protected String getApiUrl() {
+		return REQUEST_URL;
+	}
+
+	@Override
+	public GCRequest getRequestObject() {
+		return null;
+	}
+
+	@Override
+	public Class<? extends GCResponse> getResponseClass() {
+		return ConnectorsResponse.class;
+	}
+
+	public static class ConnectorsResponse extends GCResponse {
+
+		@JsonProperty("response_data")
+		private List<Connector> connectors;
+
+		public List<Connector> getResponseData() {
+			return connectors;
+		}
+
+		public void setResponseData(List<Connector> connectors) {
+			this.connectors = connectors;
+		}
+
+	}
 
 }

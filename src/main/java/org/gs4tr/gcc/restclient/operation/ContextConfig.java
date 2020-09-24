@@ -12,60 +12,60 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ContextConfig extends GCOperation {
 
-    public ContextConfig(GCConfig config) {
-	super(config);
-    }
-
-    private static final String REQUEST_URL = "context/config";
-    private static final String REQUEST_METHOD = "GET";
-
-    @Override
-    public String getRequestMethod() {
-	return REQUEST_METHOD;
-    }
-
-    @Override
-    protected String getApiUrl() {
-	return REQUEST_URL;
-    }
-
-    @Override
-    public GCRequest getRequestObject() {
-	return null;
-    }
-
-    @Override
-    public Class<? extends GCResponse> getResponseClass() {
-	return ContextConfigResponse.class;
-    }
-
-    public static class ContextConfigResponse extends GCResponse {
-
-	@JsonProperty("response_data")
-	private ContextConfigResponseData contextConfigResponseData;
-
-	public ContextConfigResponseData getResponseData() {
-	    return contextConfigResponseData;
+	public ContextConfig(GCConfig config) {
+		super(config);
 	}
 
-	public void setContextConfigResponseData(ContextConfigResponseData contextConfigResponseData) {
-	    this.contextConfigResponseData = contextConfigResponseData;
+	private static final String REQUEST_URL = "context/config";
+	private static final String REQUEST_METHOD = "GET";
+
+	@Override
+	public String getRequestMethod() {
+		return REQUEST_METHOD;
 	}
 
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class ContextConfigResponseData extends GCBasicModel {
-	@JsonProperty("xslt_configs")
-	private List<String> xsltConfigs;
-
-	public List<String> getXsltConfigs() {
-	    return xsltConfigs;
+	@Override
+	protected String getApiUrl() {
+		return REQUEST_URL;
 	}
 
-	public void setXsltConfigs(List<String> xsltConfigs) {
-	    this.xsltConfigs = xsltConfigs;
+	@Override
+	public GCRequest getRequestObject() {
+		return null;
 	}
 
-    }
+	@Override
+	public Class<? extends GCResponse> getResponseClass() {
+		return ContextConfigResponse.class;
+	}
+
+	public static class ContextConfigResponse extends GCResponse {
+
+		@JsonProperty("response_data")
+		private ContextConfigResponseData contextConfigResponseData;
+
+		public ContextConfigResponseData getResponseData() {
+			return contextConfigResponseData;
+		}
+
+		public void setContextConfigResponseData(ContextConfigResponseData contextConfigResponseData) {
+			this.contextConfigResponseData = contextConfigResponseData;
+		}
+
+	}
+
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class ContextConfigResponseData extends GCBasicModel {
+		@JsonProperty("xslt_configs")
+		private List<String> xsltConfigs;
+
+		public List<String> getXsltConfigs() {
+			return xsltConfigs;
+		}
+
+		public void setXsltConfigs(List<String> xsltConfigs) {
+			this.xsltConfigs = xsltConfigs;
+		}
+
+	}
 }

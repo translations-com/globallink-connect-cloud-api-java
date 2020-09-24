@@ -12,76 +12,76 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SubmissionSubmit extends GCOperation {
 
-    private final SubmissionSubmitRequest request;
+	private final SubmissionSubmitRequest request;
 
-    public SubmissionSubmit(GCConfig config, SubmissionSubmitRequest request) {
-	super(config);
-	this.request = request;
-    }
-
-    private static final String REQUEST_URL = "submissions/submit";
-    private static final String REQUEST_METHOD = "POST";
-
-    @Override
-    public String getRequestMethod() {
-	return REQUEST_METHOD;
-    }
-
-    @Override
-    protected String getApiUrl() {
-	return REQUEST_URL;
-    }
-
-    public SubmissionSubmitRequest getRequest() {
-	return request;
-    }
-
-    @Override
-    public GCRequest getRequestObject() {
-	return this.getRequest();
-    }
-
-    @Override
-    public Class<? extends GCResponse> getResponseClass() {
-	return SubmissionSubmitResponse.class;
-    }
-
-    public static class SubmissionSubmitResponse extends GCResponse {
-	@JsonProperty("response_data")
-	private SubmissionSubmitResponseData responseData;
-
-	public SubmissionSubmitResponseData getResponseData() {
-	    return responseData;
+	public SubmissionSubmit(GCConfig config, SubmissionSubmitRequest request) {
+		super(config);
+		this.request = request;
 	}
 
-	public void setResponseData(SubmissionSubmitResponseData responseData) {
-	    this.responseData = responseData;
+	private static final String REQUEST_URL = "content/submit";
+	private static final String REQUEST_METHOD = "POST";
+
+	@Override
+	public String getRequestMethod() {
+		return REQUEST_METHOD;
 	}
 
-    }
-
-    public static class SubmissionSubmitResponseData {
-
-	@JsonProperty("submission_id")
-	private Long submissionId;
-	@JsonProperty("jobs")
-	private List<SubmissionSubmittedJob> jobs;
-
-	public Long getSubmissionId() {
-	    return submissionId;
+	@Override
+	protected String getApiUrl() {
+		return REQUEST_URL;
 	}
 
-	public void setSubmissionId(Long submissionId) {
-	    this.submissionId = submissionId;
+	public SubmissionSubmitRequest getRequest() {
+		return request;
 	}
 
-	public List<SubmissionSubmittedJob> getJobs() {
-	    return jobs;
+	@Override
+	public GCRequest getRequestObject() {
+		return this.getRequest();
 	}
 
-	public void setJobs(List<SubmissionSubmittedJob> jobs) {
-	    this.jobs = jobs;
+	@Override
+	public Class<? extends GCResponse> getResponseClass() {
+		return SubmissionSubmitResponse.class;
 	}
 
-    }
+	public static class SubmissionSubmitResponse extends GCResponse {
+		@JsonProperty("response_data")
+		private SubmissionSubmitResponseData responseData;
+
+		public SubmissionSubmitResponseData getResponseData() {
+			return responseData;
+		}
+
+		public void setResponseData(SubmissionSubmitResponseData responseData) {
+			this.responseData = responseData;
+		}
+
+	}
+
+	public static class SubmissionSubmitResponseData {
+
+		@JsonProperty("submission_id")
+		private Long submissionId;
+		@JsonProperty("jobs")
+		private List<SubmissionSubmittedJob> jobs;
+
+		public Long getSubmissionId() {
+			return submissionId;
+		}
+
+		public void setSubmissionId(Long submissionId) {
+			this.submissionId = submissionId;
+		}
+
+		public List<SubmissionSubmittedJob> getJobs() {
+			return jobs;
+		}
+
+		public void setJobs(List<SubmissionSubmittedJob> jobs) {
+			this.jobs = jobs;
+		}
+
+	}
 }

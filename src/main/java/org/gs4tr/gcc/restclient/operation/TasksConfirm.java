@@ -16,7 +16,7 @@ public class TasksConfirm extends GCOperation {
 	this.request = request;
     }
 
-    private static final String REQUEST_URL = "tasks/confirm";
+    private static final String REQUEST_URL = "task/download/confirm";
     private static final String REQUEST_METHOD = "POST";
 
     @Override

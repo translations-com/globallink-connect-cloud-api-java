@@ -7,37 +7,37 @@ import org.gs4tr.gcc.restclient.request.TaskRequest;
 
 public class TasksDownload extends GCOperation {
 
-    private final TaskRequest request;
+	private final TaskRequest request;
 
-    public TasksDownload(GCConfig config, TaskRequest request) {
-	super(config);
-	this.request = request;
-    }
+	public TasksDownload(GCConfig config, TaskRequest request) {
+		super(config);
+		this.request = request;
+	}
 
-    private static final String REQUEST_URL = "tasks/download";
-    private static final String REQUEST_METHOD = "GET";
+	private static final String REQUEST_URL = "task/download";
+	private static final String REQUEST_METHOD = "GET";
 
-    @Override
-    public String getRequestMethod() {
-	return REQUEST_METHOD;
-    }
+	@Override
+	public String getRequestMethod() {
+		return REQUEST_METHOD;
+	}
 
-    @Override
-    protected String getApiUrl() {
-	return REQUEST_URL;
-    }
+	@Override
+	protected String getApiUrl() {
+		return REQUEST_URL;
+	}
 
-    @Override
-    public GCRequest getRequestObject() {
-	return getRequest();
-    }
+	@Override
+	public GCRequest getRequestObject() {
+		return getRequest();
+	}
 
-    public TaskRequest getRequest() {
-	return request;
-    }
+	public TaskRequest getRequest() {
+		return request;
+	}
 
-    @Override
-    public Class<? extends GCResponse> getResponseClass() {
-	return null;
-    }
+	@Override
+	public Class<? extends GCResponse> getResponseClass() {
+		return null;
+	}
 }

@@ -13,67 +13,67 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Jobs extends GCOperation {
 
-    private final JobListRequest request;
+	private final JobListRequest request;
 
-    public Jobs(GCConfig config, JobListRequest request) {
-	super(config);
-	this.request = request;
-    }
-
-    private static final String REQUEST_URL = "jobs";
-    private static final String REQUEST_METHOD = "POST";
-
-    @Override
-    public String getRequestMethod() {
-	return REQUEST_METHOD;
-    }
-
-    @Override
-    protected String getApiUrl() {
-	return REQUEST_URL;
-    }
-
-    @Override
-    public GCRequest getRequestObject() {
-	return getRequest();
-    }
-
-    @Override
-    public Class<? extends GCResponse> getResponseClass() {
-	return JobsResponse.class;
-    }
-
-    public JobListRequest getRequest() {
-	return request;
-    }
-
-    public static class JobsResponse extends GCResponse {
-
-	@JsonProperty("response_data")
-	private JobsResponseData responseData;
-
-	public JobsResponseData getResponseData() {
-	    return responseData;
+	public Jobs(GCConfig config, JobListRequest request) {
+		super(config);
+		this.request = request;
 	}
 
-	public void setResponseData(JobsResponseData responseData) {
-	    this.responseData = responseData;
+	private static final String REQUEST_URL = "job/list";
+	private static final String REQUEST_METHOD = "POST";
+
+	@Override
+	public String getRequestMethod() {
+		return REQUEST_METHOD;
 	}
 
-    }
-
-    public static class JobsResponseData extends PageableResponseData {
-
-	@JsonProperty("jobs_list")
-	private List<GCJob> jobs;
-
-	public List<GCJob> getJobs() {
-	    return jobs;
+	@Override
+	protected String getApiUrl() {
+		return REQUEST_URL;
 	}
 
-	public void setJobs(List<GCJob> jobs) {
-	    this.jobs = jobs;
+	@Override
+	public GCRequest getRequestObject() {
+		return getRequest();
 	}
 
-    }
+	@Override
+	public Class<? extends GCResponse> getResponseClass() {
+		return JobsResponse.class;
+	}
+
+	public JobListRequest getRequest() {
+		return request;
+	}
+
+	public static class JobsResponse extends GCResponse {
+
+		@JsonProperty("response_data")
+		private JobsResponseData responseData;
+
+		public JobsResponseData getResponseData() {
+			return responseData;
+		}
+
+		public void setResponseData(JobsResponseData responseData) {
+			this.responseData = responseData;
+		}
+
+	}
+
+	public static class JobsResponseData extends PageableResponseData {
+
+		@JsonProperty("jobs_list")
+		private List<GCJob> jobs;
+
+		public List<GCJob> getJobs() {
+			return jobs;
+		}
+
+		public void setJobs(List<GCJob> jobs) {
+			this.jobs = jobs;
+		}
+
+	}
 }

@@ -28,12 +28,12 @@ public class MultipartUtility {
     private OutputStream outputStream;
     private PrintWriter writer;
 
-    public MultipartUtility(URL requestURL, GCConfig config) throws IOException {
+    public MultipartUtility(URL requestURL, GCConfig config, String requestMethod) throws IOException {
 
 	boundary = "===" + System.currentTimeMillis() + "===";
 
 	httpConn = openConnection(requestURL, config);
-	httpConn.setRequestMethod("POST");
+	httpConn.setRequestMethod(requestMethod);
 	httpConn.setRequestProperty("connector_key", config.getConnectorKey());
 	httpConn.setRequestProperty("Authorization", "Bearer " + config.getBearerToken());
 	httpConn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
@@ -56,6 +56,7 @@ public class MultipartUtility {
     }
 
     public void addFilePart(String fieldName, byte[] uploadFile, String fileName) throws IOException {
+	// String fileName = uploadFile.getName();
 	writer.append("--" + boundary).append(LINE_FEED);
 	writer.append("Content-Disposition: form-data; name=\"" + fieldName + "\"; filename=\"" + fileName + "\"")
 		.append(LINE_FEED);
@@ -78,7 +79,6 @@ public class MultipartUtility {
 
     public HttpURLConnection finish() throws IOException {
 
-	writer.append(LINE_FEED).flush();
 	writer.append("--" + boundary + "--").append(LINE_FEED);
 	writer.close();
 

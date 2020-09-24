@@ -1,48 +1,48 @@
 package org.gs4tr.gcc.restclient.dto;
 
-public abstract class GCResponse {
+public abstract class GCResponse extends GCSimpleResponse {
 
-    private Integer status;
-    private Integer statusCode;
-    private String error;
-    private String message;
+	private Integer status;
+	private Integer statusCode;
+	private String error;
+	private String message;
 
-    public GCResponse() {
+	public GCResponse() {
 
-    }
-    
-    public abstract Object getResponseData();
+	}
 
-    public Integer getStatus() {
-	return status;
-    }
+	public abstract Object getResponseData();
 
-    public void setStatus(Integer status) {
-	this.status = status;
-    }
+	public Integer getStatus() {
+		return status;
+	}
 
-    public String getMessage() {
-	return message;
-    }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-    public void setMessage(String message) {
-	this.message = message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public Integer getStatusCode() {
-	return statusCode;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public void setStatusCode(Integer statusCode) {
-	this.statusCode = statusCode;
-    }
+	public Integer getStatusCode() {
+		return statusCode;
+	}
 
-    public String getError() {
-	return error;
-    }
+	public void setStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
+	}
 
-    public void setError(String error) {
-	this.error = error;
-    }
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
 
 }

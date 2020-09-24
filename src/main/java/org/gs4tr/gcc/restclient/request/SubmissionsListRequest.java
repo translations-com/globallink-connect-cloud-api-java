@@ -1,116 +1,158 @@
 package org.gs4tr.gcc.restclient.request;
 
 import java.util.List;
+import java.util.Map;
 
 import org.gs4tr.gcc.restclient.model.SubmissionStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SubmissionsListRequest extends PageableRequest {
+public class SubmissionsListRequest extends GCMultiConnectorPageableRequest {
 
-    @JsonProperty("state")
-    private String[] submissionStatuses;
-    @JsonProperty("submission_id")
-    private Long submissionId;
-    @JsonProperty("submitter")
-    private String submitter;
-    @JsonProperty("is_cancelled")
-    private Integer isCancelled;
-    @JsonProperty("is_error")
-    private Integer isError;
-    @JsonProperty("is_overdue")
-    private Integer isOverdue;
-    @JsonProperty("submission_name")
-    private String submissionName;
-    @JsonProperty("tags")
-    private List<String> tags;
+	@JsonProperty("state")
+	private String[] submissionStatuses;
+	@JsonProperty("submission_id")
+	private Long submissionId;
+	@JsonProperty("submitter")
+	private String submitter;
+	@JsonProperty("is_cancelled")
+	private Integer isCancelled;
+	@JsonProperty("is_error")
+	private Integer isError;
+	@JsonProperty("is_overdue")
+	private Integer isOverdue;
+	@JsonProperty("submission_name")
+	private String submissionName;
+	@JsonProperty("tags")
+	private List<String> tags;
 
-    public SubmissionsListRequest() {
+	@JsonProperty("attributes")
+	public Map<String, Object> attributes;
+	@JsonProperty("is_redelivery")
+	public Integer isRedelivery;
+	@JsonProperty("search_string")
+	public String searchString;
+	@JsonProperty("search_config_keys")
+	public List<String> searchConfigKeys;
 
-    }
+	public SubmissionsListRequest() {
 
-    public SubmissionsListRequest(Long pageNumber, Long pageSize, SubmissionStatus[] submissionStatuses,
-	    Long submissionId, String submitter) {
-	super(pageNumber, pageSize);
-	setSubmissionStatuses(submissionStatuses);
-	this.submissionId = submissionId;
-	this.submitter = submitter;
-    }
-
-    public void setSubmissionStatuses(SubmissionStatus[] submissionStatuses) {
-	if (submissionStatuses != null && submissionStatuses.length > 0) {
-	    this.submissionStatuses = new String[submissionStatuses.length];
-	    int i = 0;
-	    for (SubmissionStatus submissionStatus : submissionStatuses) {
-		this.submissionStatuses[i++] = submissionStatus.text();
-	    }
-	} else {
-	    this.submissionStatuses = null;
 	}
-    }
 
-    public String getSubmitter() {
-	return submitter;
-    }
+	public SubmissionsListRequest(Long pageNumber, Long pageSize, SubmissionStatus[] submissionStatuses,
+			Long submissionId, String submitter) {
+		super(pageNumber, pageSize);
+		setSubmissionStatuses(submissionStatuses);
+		this.submissionId = submissionId;
+		this.submitter = submitter;
+	}
 
-    public void setSubmitter(String submitter) {
-	this.submitter = submitter;
-    }
+	public void setSubmissionStatuses(SubmissionStatus[] submissionStatuses) {
+		if (submissionStatuses != null && submissionStatuses.length > 0) {
+			this.submissionStatuses = new String[submissionStatuses.length];
+			int i = 0;
+			for (SubmissionStatus submissionStatus : submissionStatuses) {
+				this.submissionStatuses[i++] = submissionStatus.text();
+			}
+		} else {
+			this.submissionStatuses = null;
+		}
+	}
 
-    public String[] getSubmissionStatuses() {
-	return submissionStatuses;
-    }
+	public String getSubmitter() {
+		return submitter;
+	}
 
-    public void setSubmissionStatuses(String[] submissionStatuses) {
-	this.submissionStatuses = submissionStatuses;
-    }
+	public void setSubmitter(String submitter) {
+		this.submitter = submitter;
+	}
 
-    public Long getSubmissionId() {
-	return submissionId;
-    }
+	public String[] getSubmissionStatuses() {
+		return submissionStatuses;
+	}
 
-    public void setSubmissionId(Long submissionId) {
-	this.submissionId = submissionId;
-    }
+	public void setSubmissionStatuses(String[] submissionStatuses) {
+		this.submissionStatuses = submissionStatuses;
+	}
 
-    public String getSubmissionName() {
-	return submissionName;
-    }
+	public Long getSubmissionId() {
+		return submissionId;
+	}
 
-    public void setSubmissionName(String submissionName) {
-	this.submissionName = submissionName;
-    }
+	public void setSubmissionId(Long submissionId) {
+		this.submissionId = submissionId;
+	}
 
-    public Integer getIsCancelled() {
-	return isCancelled;
-    }
+	public String getSubmissionName() {
+		return submissionName;
+	}
 
-    public void setIsCancelled(Integer isCancelled) {
-	this.isCancelled = isCancelled;
-    }
+	public void setSubmissionName(String submissionName) {
+		this.submissionName = submissionName;
+	}
 
-    public Integer getIsError() {
-	return isError;
-    }
+	public Integer getIsCancelled() {
+		return isCancelled;
+	}
 
-    public void setIsError(Integer isError) {
-	this.isError = isError;
-    }
+	public void setIsCancelled(Integer isCancelled) {
+		this.isCancelled = isCancelled;
+	}
 
-    public Integer getIsOverdue() {
-	return isOverdue;
-    }
+	public Integer getIsError() {
+		return isError;
+	}
 
-    public void setIsOverdue(Integer isOverdue) {
-	this.isOverdue = isOverdue;
-    }
+	public void setIsError(Integer isError) {
+		this.isError = isError;
+	}
 
-    public List<String> getTags() {
-	return tags;
-    }
+	public Integer getIsOverdue() {
+		return isOverdue;
+	}
 
-    public void setTags(List<String> tags) {
-	this.tags = tags;
-    }
+	public void setIsOverdue(Integer isOverdue) {
+		this.isOverdue = isOverdue;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
+	}
+
+	public Integer getIsRedelivery() {
+		return isRedelivery;
+	}
+
+	public void setIsRedelivery(Integer isRedelivery) {
+		this.isRedelivery = isRedelivery;
+	}
+
+	public String getSearchString() {
+		return searchString;
+	}
+
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
+	}
+
+	public List<String> getSearchConfigKeys() {
+		return searchConfigKeys;
+	}
+
+	public void setSearchConfigKeys(List<String> searchConfigKeys) {
+		this.searchConfigKeys = searchConfigKeys;
+	}
 
 }

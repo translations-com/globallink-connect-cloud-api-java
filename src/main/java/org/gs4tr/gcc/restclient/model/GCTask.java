@@ -27,8 +27,10 @@ public class GCTask {
 	private String nodeType;
 	@JsonProperty("unique_identifier")
 	private String uniqueIdentifier;
-	@JsonProperty("status")
-	private String status;
+	@JsonProperty("state")
+	private String state;
+	@JsonProperty("source_locale")
+	private Locale sourceLocale;
 	@JsonProperty("target_locale")
 	private Locale targetLocale;
 	@JsonProperty("last_updated")
@@ -45,18 +47,18 @@ public class GCTask {
 	@JsonProperty("confirm_cancel")
 	private Boolean isCancelConfirmed;
 
-	@JsonProperty("public_preview_url")
-	private String publicPreviewUrl;
-	@JsonProperty("context_url")
-	private String contextUrl;
 	@JsonProperty("submitter")
 	private String submitter;
 	@JsonProperty("path")
 	private String path;
 	@JsonProperty("sequence_number")
 	private Long sequenceNumber;
+	@JsonProperty("metadata")
+	private Map<String, Object> metadata;
 	@JsonProperty("node_metadata")
 	private Map<String, Object> nodeMetadata;
+	@JsonProperty("connector_key")
+	private String connectorKey;
 
 	public GCTask() {
 
@@ -108,14 +110,6 @@ public class GCTask {
 
 	public void setUniqueIdentifier(String uniqueIdentifier) {
 		this.uniqueIdentifier = uniqueIdentifier;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public Locale getTargetLocale() {
@@ -190,22 +184,6 @@ public class GCTask {
 		this.isCancelConfirmed = isCancelConfirmed;
 	}
 
-	public String getPublicPreviewUrl() {
-		return publicPreviewUrl;
-	}
-
-	public void setPublicPreviewUrl(String publicPreviewUrl) {
-		this.publicPreviewUrl = publicPreviewUrl;
-	}
-
-	public String getContextUrl() {
-		return contextUrl;
-	}
-
-	public void setContextUrl(String contextUrl) {
-		this.contextUrl = contextUrl;
-	}
-
 	public String getSubmitter() {
 		return submitter;
 	}
@@ -244,6 +222,38 @@ public class GCTask {
 
 	public void setPdSubmissionIds(List<String> pdSubmissionIds) {
 		this.pdSubmissionIds = pdSubmissionIds;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public Locale getSourceLocale() {
+		return sourceLocale;
+	}
+
+	public void setSourceLocale(Locale sourceLocale) {
+		this.sourceLocale = sourceLocale;
+	}
+
+	public Map<String, Object> getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(Map<String, Object> metadata) {
+		this.metadata = metadata;
+	}
+
+	public String getConnectorKey() {
+		return connectorKey;
+	}
+
+	public void setConnectorKey(String connectorKey) {
+		this.connectorKey = connectorKey;
 	}
 
 }

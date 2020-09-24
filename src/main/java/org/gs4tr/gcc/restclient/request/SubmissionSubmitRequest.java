@@ -10,201 +10,201 @@ import org.gs4tr.gcc.restclient.util.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SubmissionSubmitRequest extends GCRequest {
-    @JsonProperty("submission_name")
-    private String submissionName;
-    @JsonProperty("due_date")
-    private Date dueDate;
-    @JsonProperty("instructions")
-    private String instructions;
-    @JsonProperty("source_locale")
-    private String sourceLocale;
-    @JsonProperty("target_locale")
-    private List<String> targetLocales;
-    @JsonProperty("content_list")
-    private List<String> contentList;
-    @JsonProperty("reference_file_list")
-    private List<String> referenceFileList;
-    @JsonProperty("submitter")
-    private String submitter;
-    @JsonProperty("callback_url")
-    private String callbackUrl;
-    @JsonProperty("attributes")
-    private Map<String, Object> attributes;
-    @JsonProperty("config")
-    private Map<String, Object> config;
-    @JsonProperty("content_list_locale")
-    private List<ContentLocales> contentLocales;
-    @JsonProperty("workflow")
-    private String workflow;
-    @JsonProperty("tags")
-    private List<String> tags;
+	@JsonProperty("submission_name")
+	private String submissionName;
+	@JsonProperty("due_date")
+	private Date dueDate;
+	@JsonProperty("instructions")
+	private String instructions;
+	@JsonProperty("source_locale")
+	private String sourceLocale;
+	@JsonProperty("target_locale")
+	private List<String> targetLocales;
+	@JsonProperty("content_list")
+	private List<String> contentList;
+	@JsonProperty("reference_file_list")
+	private List<String> referenceFileList;
+	@JsonProperty("submitter")
+	private String submitter;
+	@JsonProperty("callback_url")
+	private String callbackUrl;
+	@JsonProperty("attributes")
+	private Map<String, Object> attributes;
+	@JsonProperty("config")
+	private Map<String, Object> config;
+	@JsonProperty("content_list_locale")
+	private List<ContentLocales> contentLocales;
+	@JsonProperty("workflow")
+	private String workflow;
+	@JsonProperty("tags")
+	private List<String> tags;
 
-    public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale, List<String> targetLocales,
-	    List<String> contentList) {
-	if (StringUtils.isNullOrEmpty(submissionName)) {
-	    throw new IllegalArgumentException("Submission Name is required");
+	public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale, List<String> targetLocales,
+			List<String> contentList) {
+		if (StringUtils.isNullOrEmpty(submissionName)) {
+			throw new IllegalArgumentException("Submission Name is required");
+		}
+		if (dueDate.compareTo(new Date()) < 0) {
+			throw new IllegalArgumentException("DueDate must be after current date");
+		}
+		if (StringUtils.isNullOrEmpty(sourceLocale)) {
+			throw new IllegalArgumentException("Source Locale is required");
+		}
+		if (targetLocales == null || targetLocales.size() <= 0) {
+			throw new IllegalArgumentException("At least one target locale is required");
+		}
+		if (contentList == null || contentList.size() <= 0) {
+			throw new IllegalArgumentException("At least one Content is required");
+		}
+		this.submissionName = submissionName;
+		this.dueDate = dueDate;
+		this.sourceLocale = sourceLocale;
+		this.targetLocales = targetLocales;
+		this.contentList = contentList;
 	}
-	if (dueDate.compareTo(new Date()) < 0) {
-	    throw new IllegalArgumentException("DueDate must be after current date");
+
+	public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale,
+			List<ContentLocales> contentLocales) {
+		if (StringUtils.isNullOrEmpty(submissionName)) {
+			throw new IllegalArgumentException("Submission Name is required");
+		}
+		if (dueDate.compareTo(new Date()) < 0) {
+			throw new IllegalArgumentException("DueDate must be after current date");
+		}
+		if (StringUtils.isNullOrEmpty(sourceLocale)) {
+			throw new IllegalArgumentException("Source Locale is required");
+		}
+		if (contentLocales == null || contentLocales.size() <= 0) {
+			throw new IllegalArgumentException("At least one Content is required");
+		}
+		this.submissionName = submissionName;
+		this.dueDate = dueDate;
+		this.sourceLocale = sourceLocale;
+		this.contentLocales = contentLocales;
 	}
-	if (StringUtils.isNullOrEmpty(sourceLocale)) {
-	    throw new IllegalArgumentException("Source Locale is required");
+
+	public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale, List<String> targetLocales,
+			List<String> contentList, String instructions, String submitter, List<String> referenceFileList,
+			String callbackUrl, Map<String, Object> attributes, Map<String, Object> config) {
+		this(submissionName, dueDate, sourceLocale, targetLocales, contentList);
+		this.instructions = instructions;
+		this.submitter = submitter;
+		this.attributes = attributes;
+		this.config = config;
+		this.referenceFileList = referenceFileList;
+		this.callbackUrl = callbackUrl;
 	}
-	if (targetLocales == null || targetLocales.size() <= 0) {
-	    throw new IllegalArgumentException("At least one target locale is required");
+
+	public String getSubmissionName() {
+		return submissionName;
 	}
-	if (contentList == null || contentList.size() <= 0) {
-	    throw new IllegalArgumentException("At least one Content is required");
+
+	public void setSubmissionName(String submissionName) {
+		this.submissionName = submissionName;
 	}
-	this.submissionName = submissionName;
-	this.dueDate = dueDate;
-	this.sourceLocale = sourceLocale;
-	this.targetLocales = targetLocales;
-	this.contentList = contentList;
-    }
 
-    public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale,
-	    List<ContentLocales> contentLocales) {
-	if (StringUtils.isNullOrEmpty(submissionName)) {
-	    throw new IllegalArgumentException("Submission Name is required");
+	public Date getDueDate() {
+		return dueDate;
 	}
-	if (dueDate.compareTo(new Date()) < 0) {
-	    throw new IllegalArgumentException("DueDate must be after current date");
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
 	}
-	if (StringUtils.isNullOrEmpty(sourceLocale)) {
-	    throw new IllegalArgumentException("Source Locale is required");
+
+	public String getInstructions() {
+		return instructions;
 	}
-	if (contentLocales == null || contentLocales.size() <= 0) {
-	    throw new IllegalArgumentException("At least one Content is required");
+
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
 	}
-	this.submissionName = submissionName;
-	this.dueDate = dueDate;
-	this.sourceLocale = sourceLocale;
-	this.contentLocales = contentLocales;
-    }
 
-    public SubmissionSubmitRequest(String submissionName, Date dueDate, String sourceLocale, List<String> targetLocales,
-	    List<String> contentList, String instructions, String submitter, List<String> referenceFileList,
-	    String callbackUrl, Map<String, Object> attributes, Map<String, Object> config) {
-	this(submissionName, dueDate, sourceLocale, targetLocales, contentList);
-	this.instructions = instructions;
-	this.submitter = submitter;
-	this.attributes = attributes;
-	this.config = config;
-	this.referenceFileList = referenceFileList;
-	this.callbackUrl = callbackUrl;
-    }
+	public String getSourceLocale() {
+		return sourceLocale;
+	}
 
-    public String getSubmissionName() {
-	return submissionName;
-    }
+	public void setSourceLocale(String sourceLocale) {
+		this.sourceLocale = sourceLocale;
+	}
 
-    public void setSubmissionName(String submissionName) {
-	this.submissionName = submissionName;
-    }
+	public List<String> getTargetLocales() {
+		return targetLocales;
+	}
 
-    public Date getDueDate() {
-	return dueDate;
-    }
+	public void setTargetLocales(List<String> targetLocales) {
+		this.targetLocales = targetLocales;
+	}
 
-    public void setDueDate(Date dueDate) {
-	this.dueDate = dueDate;
-    }
+	public List<String> getContentList() {
+		return contentList;
+	}
 
-    public String getInstructions() {
-	return instructions;
-    }
+	public void setContentList(List<String> contentList) {
+		this.contentList = contentList;
+	}
 
-    public void setInstructions(String instructions) {
-	this.instructions = instructions;
-    }
+	public List<String> getReferenceFileList() {
+		return referenceFileList;
+	}
 
-    public String getSourceLocale() {
-	return sourceLocale;
-    }
+	public void setReferenceFileList(List<String> referenceFileList) {
+		this.referenceFileList = referenceFileList;
+	}
 
-    public void setSourceLocale(String sourceLocale) {
-	this.sourceLocale = sourceLocale;
-    }
+	public String getSubmitter() {
+		return submitter;
+	}
 
-    public List<String> getTargetLocales() {
-	return targetLocales;
-    }
+	public void setSubmitter(String submitter) {
+		this.submitter = submitter;
+	}
 
-    public void setTargetLocales(List<String> targetLocales) {
-	this.targetLocales = targetLocales;
-    }
+	public String getCallbackUrl() {
+		return callbackUrl;
+	}
 
-    public List<String> getContentList() {
-	return contentList;
-    }
+	public void setCallbackUrl(String callbackUrl) {
+		this.callbackUrl = callbackUrl;
+	}
 
-    public void setContentList(List<String> contentList) {
-	this.contentList = contentList;
-    }
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
 
-    public List<String> getReferenceFileList() {
-	return referenceFileList;
-    }
+	public void setAttributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
+	}
 
-    public void setReferenceFileList(List<String> referenceFileList) {
-	this.referenceFileList = referenceFileList;
-    }
+	public Map<String, Object> getConfig() {
+		return config;
+	}
 
-    public String getSubmitter() {
-	return submitter;
-    }
+	public void setConfig(Map<String, Object> config) {
+		this.config = config;
+	}
 
-    public void setSubmitter(String submitter) {
-	this.submitter = submitter;
-    }
+	public List<ContentLocales> getContentLocales() {
+		return contentLocales;
+	}
 
-    public String getCallbackUrl() {
-	return callbackUrl;
-    }
+	public void setContentLocales(List<ContentLocales> contentLocales) {
+		this.contentLocales = contentLocales;
+	}
 
-    public void setCallbackUrl(String callbackUrl) {
-	this.callbackUrl = callbackUrl;
-    }
+	public String getWorkflow() {
+		return workflow;
+	}
 
-    public Map<String, Object> getAttributes() {
-	return attributes;
-    }
+	public void setWorkflow(String workflow) {
+		this.workflow = workflow;
+	}
 
-    public void setAttributes(Map<String, Object> attributes) {
-	this.attributes = attributes;
-    }
+	public List<String> getTags() {
+		return tags;
+	}
 
-    public Map<String, Object> getConfig() {
-	return config;
-    }
-
-    public void setConfig(Map<String, Object> config) {
-	this.config = config;
-    }
-
-    public List<ContentLocales> getContentLocales() {
-	return contentLocales;
-    }
-
-    public void setContentLocales(List<ContentLocales> contentLocales) {
-	this.contentLocales = contentLocales;
-    }
-
-    public String getWorkflow() {
-	return workflow;
-    }
-
-    public void setWorkflow(String workflow) {
-	this.workflow = workflow;
-    }
-
-    public List<String> getTags() {
-	return tags;
-    }
-
-    public void setTags(List<String> tags) {
-	this.tags = tags;
-    }
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
 
 }

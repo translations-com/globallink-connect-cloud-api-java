@@ -8,43 +8,43 @@ import org.gs4tr.gcc.restclient.request.TaskErrorRequest;
 
 public class TasksError extends GCOperation {
 
-    private final TaskErrorRequest request;
+	private final TaskErrorRequest request;
 
-    public TasksError(GCConfig config, TaskErrorRequest request) {
-	super(config);
-	this.request = request;
-    }
+	public TasksError(GCConfig config, TaskErrorRequest request) {
+		super(config);
+		this.request = request;
+	}
 
-    private static final String REQUEST_URL = "tasks/error";
-    private static final String REQUEST_METHOD = "POST";
+	private static final String REQUEST_URL = "task/error";
+	private static final String REQUEST_METHOD = "POST";
 
-    @Override
-    public String getRequestMethod() {
-	return REQUEST_METHOD;
-    }
+	@Override
+	public String getRequestMethod() {
+		return REQUEST_METHOD;
+	}
 
-    @Override
-    protected String getApiUrl() {
-	return REQUEST_URL;
-    }
+	@Override
+	protected String getApiUrl() {
+		return REQUEST_URL;
+	}
 
-    @Override
-    public GCRequest getRequestObject() {
-	return getRequest();
-    }
+	@Override
+	public GCRequest getRequestObject() {
+		return getRequest();
+	}
 
-    @Override
-    public Class<? extends GCResponse> getResponseClass() {
-	return MessageResponse.class;
-    }
+	@Override
+	public Class<? extends GCResponse> getResponseClass() {
+		return MessageResponse.class;
+	}
 
-    @Override
-    public Boolean allowErrorResponse() {
-	return true;
-    }
+	@Override
+	public Boolean allowErrorResponse() {
+		return true;
+	}
 
-    public TaskErrorRequest getRequest() {
-	return request;
-    }
+	public TaskErrorRequest getRequest() {
+		return request;
+	}
 
 }

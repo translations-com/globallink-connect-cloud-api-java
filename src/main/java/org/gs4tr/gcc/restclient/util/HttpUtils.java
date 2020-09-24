@@ -12,9 +12,6 @@ import javax.net.ssl.HttpsURLConnection;
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.GCProxyConfig;
 
-import sun.net.www.protocol.http.AuthCacheImpl;
-import sun.net.www.protocol.http.AuthCacheValue;
-
 public class HttpUtils {
 
     public static HttpURLConnection openConnection(URL url, GCConfig config) throws IOException {
@@ -51,11 +48,7 @@ public class HttpUtils {
 			proxyConfig.getProxyPort() > 0 ? proxyConfig.getProxyPort() : 80));
 		if (!StringUtils.isNullOrEmpty(proxyConfig.getProxyUser())
 			&& !StringUtils.isNullOrEmpty(proxyConfig.getProxyPassword())) {
-		    try {
-			// to not cache proxy credentials
-			AuthCacheValue.setAuthCache(new AuthCacheImpl());
-		    } catch (Throwable e) {
-		    }
+		    
 		    System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 		    java.net.Authenticator.setDefault(new java.net.Authenticator() {
 			public java.net.PasswordAuthentication getPasswordAuthentication() {

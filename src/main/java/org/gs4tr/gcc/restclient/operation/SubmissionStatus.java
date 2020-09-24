@@ -15,7 +15,7 @@ public class SubmissionStatus extends GCOperation {
 		this.request = request;
 	}
 
-	private static final String REQUEST_URL = "submissions/status";
+	private static final String REQUEST_URL = "submission/status";
 	private static final String REQUEST_METHOD = "GET";
 
 	@Override

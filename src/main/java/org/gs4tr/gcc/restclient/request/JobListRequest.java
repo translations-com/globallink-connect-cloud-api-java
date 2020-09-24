@@ -4,7 +4,7 @@ import org.gs4tr.gcc.restclient.model.JobStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JobListRequest extends PageableRequest {
+public class JobListRequest extends GCMultiConnectorPageableRequest {
 
     @JsonProperty("state")
     private String[] jobStatuses;
@@ -20,6 +20,12 @@ public class JobListRequest extends PageableRequest {
     private Integer isError;
     @JsonProperty("is_overdue")
     private Integer isOverdue;
+    @JsonProperty("is_redelivery")
+    private Integer isRedelivery;
+    @JsonProperty("job_id")
+    private Long jobId;
+    @JsonProperty("submissionName")
+    private String submissionName;
 
     public JobListRequest() {
 

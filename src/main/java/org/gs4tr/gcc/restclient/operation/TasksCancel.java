@@ -15,7 +15,7 @@ public class TasksCancel extends GCOperation {
 		this.request = request;
 	}
 
-	private static final String REQUEST_URL = "tasks/cancel";
+	private static final String REQUEST_URL = "task/cancel";
 	private static final String REQUEST_METHOD = "POST";
 
 	@Override

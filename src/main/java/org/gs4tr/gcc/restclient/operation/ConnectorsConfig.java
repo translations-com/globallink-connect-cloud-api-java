@@ -7,7 +7,6 @@ import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.model.GCAttribute;
 import org.gs4tr.gcc.restclient.model.LanguageDirection;
 import org.gs4tr.gcc.restclient.model.LocaleConfig;
-import org.gs4tr.gcc.restclient.model.Status;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -19,7 +18,7 @@ public class ConnectorsConfig extends GCOperation {
 		super(config);
 	}
 
-	private static final String REQUEST_URL = "connectors/config";
+	private static final String REQUEST_URL = "connector/config";
 	private static final String REQUEST_METHOD = "GET";
 
 	@Override
@@ -71,6 +70,12 @@ public class ConnectorsConfig extends GCOperation {
 		private ConnectorsConfigSubmissionOptions submissionOptions;
 		@JsonProperty("available_states")
 		private ConnectorsConfigAvailableStates availableStates;
+		@JsonProperty("is_multi_source_locale_supported")
+		private Boolean isMultiSourceLocaleSupported;
+		@JsonProperty("connector_name")
+		private String connectorName;
+		@JsonProperty("connector_type")
+		private String connectorType;
 
 		public List<LocaleConfig> getSupportedLocales() {
 			return supportedLocales;
@@ -120,42 +125,66 @@ public class ConnectorsConfig extends GCOperation {
 			this.availableStates = availableStates;
 		}
 
+		public Boolean getIsMultiSourceLocaleSupported() {
+			return isMultiSourceLocaleSupported;
+		}
+
+		public void setIsMultiSourceLocaleSupported(Boolean isMultiSourceLocaleSupported) {
+			this.isMultiSourceLocaleSupported = isMultiSourceLocaleSupported;
+		}
+
+		public String getConnectorName() {
+			return connectorName;
+		}
+
+		public void setConnectorName(String connectorName) {
+			this.connectorName = connectorName;
+		}
+
+		public String getConnectorType() {
+			return connectorType;
+		}
+
+		public void setConnectorType(String connectorType) {
+			this.connectorType = connectorType;
+		}
+
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class ConnectorsConfigAvailableStates {
 		@JsonProperty("submission")
-		private List<Status> submissionStatuses;
+		private List<String> submissionStatuses;
 		@JsonProperty("job")
-		private List<Status> jobStatuses;
+		private List<String> jobStatuses;
 		@JsonProperty("task")
-		private List<Status> taskStatuses;
+		private List<String> taskStatuses;
 
 		public ConnectorsConfigAvailableStates() {
 
 		}
 
-		public List<Status> getSubmissionStatuses() {
+		public List<String> getSubmissionStatuses() {
 			return submissionStatuses;
 		}
 
-		public void setSubmissionStatuses(List<Status> submissionStatuses) {
+		public void setSubmissionStatuses(List<String> submissionStatuses) {
 			this.submissionStatuses = submissionStatuses;
 		}
 
-		public List<Status> getJobStatuses() {
+		public List<String> getJobStatuses() {
 			return jobStatuses;
 		}
 
-		public void setJobStatuses(List<Status> jobStatuses) {
+		public void setJobStatuses(List<String> jobStatuses) {
 			this.jobStatuses = jobStatuses;
 		}
 
-		public List<Status> getTaskStatuses() {
+		public List<String> getTaskStatuses() {
 			return taskStatuses;
 		}
 
-		public void setTaskStatuses(List<Status> taskStatuses) {
+		public void setTaskStatuses(List<String> taskStatuses) {
 			this.taskStatuses = taskStatuses;
 		}
 

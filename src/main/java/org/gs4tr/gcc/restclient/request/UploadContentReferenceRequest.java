@@ -11,62 +11,61 @@ import org.gs4tr.gcc.restclient.util.StringUtils;
 
 public class UploadContentReferenceRequest extends GCRequest {
 
-    private byte[] contents;
-    private String fileName;
-    
-    public UploadContentReferenceRequest(String filePath) throws IOException {
-	this(filePath, null);
-    }
+	private byte[] contents;
+	private String fileName;
 
-    public UploadContentReferenceRequest(String filePath, String name) throws IOException {
-	File file = new File(filePath);
-	if (!file.exists()) {
-	    throw new IllegalArgumentException("File does not exist - " + filePath);
+	public UploadContentReferenceRequest(String filePath) throws IOException {
+		this(filePath, null);
 	}
 
-	this.contents = Files.readAllBytes(Paths.get(filePath));
-	this.fileName = name;
-	if (StringUtils.isNullOrEmpty(name)) {
-	    this.fileName = file.getName();
-	}
-    }
+	public UploadContentReferenceRequest(String filePath, String name) throws IOException {
+		File file = new File(filePath);
+		if (!file.exists()) {
+			throw new IllegalArgumentException("File does not exist - " + filePath);
+		}
 
-    public UploadContentReferenceRequest(byte[] contents, String name) {
-	this.contents = contents;
-	if (contents == null || contents.length <= 0) {
-	    throw new IllegalArgumentException("Byte array with contents is empty");
-	}
-	if (StringUtils.isNullOrEmpty(name)) {
-	    throw new IllegalArgumentException("File name is required");
+		this.contents = Files.readAllBytes(Paths.get(filePath));
+		this.fileName = name;
+		if (StringUtils.isNullOrEmpty(name)) {
+			this.fileName = file.getName();
+		}
 	}
 
-	this.fileName = name;
-    }
+	public UploadContentReferenceRequest(byte[] contents, String name) {
+		this.contents = contents;
+		if (contents == null || contents.length <= 0) {
+			throw new IllegalArgumentException("Byte array with contents is empty");
+		}
+		if (StringUtils.isNullOrEmpty(name)) {
+			throw new IllegalArgumentException("File name is required");
+		}
 
+		this.fileName = name;
+	}
 
-    public Map<String, Object> getParameters() {
-	Map<String, Object> parameters = new HashMap<String, Object>();
-	parameters.putAll(super.getParameters());
+	public Map<String, Object> getParameters() {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.putAll(super.getParameters());
 
-	parameters.put("name", this.fileName);
-	parameters.put("file", this.contents);
-	return parameters;
-    }
+		parameters.put("name", this.fileName);
+		parameters.put("file", this.contents);
+		return parameters;
+	}
 
-    public byte[] getContents() {
-	return contents;
-    }
+	public byte[] getContents() {
+		return contents;
+	}
 
-    public void setContents(byte[] contents) {
-	this.contents = contents;
-    }
+	public void setContents(byte[] contents) {
+		this.contents = contents;
+	}
 
-    public String getFileName() {
-	return fileName;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public void setFileName(String fileName) {
-	this.fileName = fileName;
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 }

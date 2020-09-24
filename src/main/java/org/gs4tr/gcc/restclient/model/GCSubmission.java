@@ -37,7 +37,9 @@ public class GCSubmission extends GCBasicModel {
 	@JsonProperty("tags")
 	private List<String> tags;
 	@JsonProperty("pd_submission_id")
-	private List<String> pdSubmissionIds;
+	private Map<String, String> pdSubmissionIds;
+	@JsonProperty("connector_key")
+	private String connectorKey;
 
 	public GCSubmission() {
 
@@ -155,12 +157,20 @@ public class GCSubmission extends GCBasicModel {
 		this.tags = tags;
 	}
 
-	public List<String> getPdSubmissionIds() {
+	public Map<String, String> getPdSubmissionIds() {
 		return pdSubmissionIds;
 	}
 
-	public void setPdSubmissionIds(List<String> pdSubmissionIds) {
+	public void setPdSubmissionIds(Map<String, String> pdSubmissionIds) {
 		this.pdSubmissionIds = pdSubmissionIds;
+	}
+
+	public String getConnectorKey() {
+		return connectorKey;
+	}
+
+	public void setConnectorKey(String connectorKey) {
+		this.connectorKey = connectorKey;
 	}
 
 }
