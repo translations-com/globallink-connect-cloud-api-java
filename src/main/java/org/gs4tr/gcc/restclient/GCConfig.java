@@ -12,18 +12,18 @@ public class GCConfig {
 	private String password;
 	private String connectorKey;
 	private String userAgent;
+	private String trustStorePath;
+    private String trustStorePassword;
 	private GCProxyConfig proxyConfig;
 	private Map<String, String> customHeaders = new HashMap<>();
 
 	private String bearerToken;
+	
+	private String apiKey;
 
 	private Logger logger;
 
-	/**
-	 * Basic Configuration class for GCC. Default Constructor
-	 * 
-	 */
-	public GCConfig() {
+	private GCConfig() {
 		logger = Logger.getLogger(GCExchange.class.getName());
 		logger.setLevel(Level.OFF);
 	}
@@ -31,7 +31,7 @@ public class GCConfig {
 	/**
 	 * Basic Configuration class for GCC
 	 * 
-	 * @param apiUrl   API URL e.g. https://xxx-dev.translations.com/api/v2
+	 * @param apiUrl   API URL e.g. https://xxx-dev.translations.com
 	 * @param userName User Name
 	 * @param password Password
 	 */
@@ -41,11 +41,23 @@ public class GCConfig {
 		this.userName = userName;
 		this.password = password;
 	}
+	
+	/**
+	 * Basic Configuration class for GCC
+	 * 
+	 * @param apiUrl API URL e.g. https://xxx-dev.translations.com
+	 * @param apiKey API Key 
+	 */
+	public GCConfig(String apiUrl, String apiKey) {
+		this();
+		this.apiUrl = apiUrl;
+		this.apiKey = apiKey;
+	}
 
 	/**
 	 * Basic Configuration class for GCC
 	 * 
-	 * @param apiUrl       API URL e.g. https://xxx-dev.translations.com/api/v2
+	 * @param apiUrl       API URL e.g. https://xxx-dev.translations.com
 	 * @param userName     User Name
 	 * @param password     Password
 	 * @param connectorKey connector key
@@ -58,7 +70,7 @@ public class GCConfig {
 	/**
 	 * Basic Configuration class for GCC
 	 * 
-	 * @param apiUrl       API URL e.g. https://xxx-dev.translations.com/api/v2
+	 * @param apiUrl       API URL e.g. https://xxx-dev.translations.com
 	 * @param userName     User Name
 	 * @param password     Password
 	 * @param connectorKey connector key
@@ -72,7 +84,7 @@ public class GCConfig {
 	/**
 	 * Basic Configuration class for GCC
 	 * 
-	 * @param apiUrl        API URL e.g. https://xxx-dev.translations.com/api/v2
+	 * @param apiUrl        API URL e.g. https://xxx-dev.translations.com
 	 * @param userName      User Name
 	 * @param password      Password
 	 * @param connectorKey  connector key
@@ -80,8 +92,9 @@ public class GCConfig {
 	 * @param customHeaders customHeaders
 	 */
 	public GCConfig(String apiUrl, String userName, String password, String connectorKey, String userAgent,
-			Map<String, String> customHeaders) {
+			String apiKey, Map<String, String> customHeaders) {
 		this(apiUrl, userName, password, connectorKey, userAgent);
+		this.apiKey = apiKey;
 		this.customHeaders.putAll(customHeaders);
 	}
 
@@ -161,6 +174,30 @@ public class GCConfig {
 		this.logger = logger;
 	}
 
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public String getTrustStorePath() {
+		return trustStorePath;
+	}
+
+	public void setTrustStorePath(String trustStorePath) {
+		this.trustStorePath = trustStorePath;
+	}
+
+	public String getTrustStorePassword() {
+		return trustStorePassword;
+	}
+
+	public void setTrustStorePassword(String trustStorePassword) {
+		this.trustStorePassword = trustStorePassword;
+	}
+
 	public static class Builder {
 
 		private String apiUrl;
@@ -168,6 +205,7 @@ public class GCConfig {
 		private String password;
 		private String connectorKey;
 		private String userAgent;
+		private String apiKey;
 		private Map<String, String> customHeaders = new HashMap<>();
 
 		private Builder() {
@@ -197,6 +235,11 @@ public class GCConfig {
 			this.userAgent = userAgent;
 			return this;
 		}
+		
+		public Builder apiKey(String apiKey) {
+			this.apiKey = apiKey;
+			return this;
+		}
 
 		public Builder customHeader(String name, String value) {
 			customHeaders.put(name, value);
@@ -209,7 +252,7 @@ public class GCConfig {
 		}
 
 		public GCConfig build() {
-			return new GCConfig(apiUrl, userName, password, connectorKey, userAgent, customHeaders);
+			return new GCConfig(apiUrl, userName, password, connectorKey, userAgent, apiKey, customHeaders);
 		}
 
 	}

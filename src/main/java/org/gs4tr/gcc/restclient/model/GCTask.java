@@ -19,11 +19,11 @@ public class GCTask {
 	private String nodeId;
 	@JsonProperty("content_id")
 	private String contentId;
-	@JsonProperty("submissionName")
+	@JsonProperty("submission_name")
 	private String submissionName;
 	@JsonProperty("name")
 	private String name;
-	@JsonProperty("node_type")
+	@JsonProperty("file_type")
 	private String nodeType;
 	@JsonProperty("unique_identifier")
 	private String uniqueIdentifier;
@@ -33,6 +33,8 @@ public class GCTask {
 	private Locale sourceLocale;
 	@JsonProperty("target_locale")
 	private Locale targetLocale;
+	@JsonProperty("created_at")
+	private Date createdAt;
 	@JsonProperty("last_updated")
 	private Date lastUpdated;
 	@JsonProperty("pd_submission_id")
@@ -59,6 +61,10 @@ public class GCTask {
 	private Map<String, Object> nodeMetadata;
 	@JsonProperty("connector_key")
 	private String connectorKey;
+	@JsonProperty("connector_name")
+	private String connectorName;
+	@JsonProperty("version")
+	private String version;
 
 	public GCTask() {
 
@@ -254,6 +260,30 @@ public class GCTask {
 
 	public void setConnectorKey(String connectorKey) {
 		this.connectorKey = connectorKey;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getConnectorName() {
+		return connectorName;
+	}
+
+	public void setConnectorName(String connectorName) {
+		this.connectorName = connectorName;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

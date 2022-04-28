@@ -20,7 +20,7 @@ public class UploadFileRequest extends GCRequest {
 	private String contextUrl;
 	private String submitter;
 	private String path;
-	private String customAttributes;
+	private String metadata;
 	private String publicPreviewUrl;
 	private String sourceLocale;
 	private String changeDetectionData;
@@ -60,7 +60,7 @@ public class UploadFileRequest extends GCRequest {
 	}
 
 	public UploadFileRequest(String filePath, String name, String fileType, String uniqueIdentifier, String contextUrl,
-			String submitter, String path, Map<String, Object> customAttributes, Long sequenceNumber)
+			String submitter, String path, Map<String, Object> metadata, Long sequenceNumber)
 			throws IOException {
 		this(filePath, name, fileType);
 
@@ -68,15 +68,15 @@ public class UploadFileRequest extends GCRequest {
 		this.contextUrl = contextUrl;
 		this.submitter = submitter;
 		this.path = path;
-		if (customAttributes != null) {
+		if (metadata != null) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			this.customAttributes = objectMapper.writeValueAsString(customAttributes);
+			this.metadata = objectMapper.writeValueAsString(metadata);
 		}
 		this.sequenceNumber = sequenceNumber;
 	}
 
 	public UploadFileRequest(byte[] contents, String name, String fileType, String uniqueIdentifier, String contextUrl,
-			String submitter, String path, Map<String, Object> customAttributes, Long sequenceNumber)
+			String submitter, String path, Map<String, Object> metadata, Long sequenceNumber)
 			throws IOException {
 		this(contents, name, fileType);
 
@@ -84,15 +84,15 @@ public class UploadFileRequest extends GCRequest {
 		this.contextUrl = contextUrl;
 		this.submitter = submitter;
 		this.path = path;
-		if (customAttributes != null) {
+		if (metadata != null) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			this.customAttributes = objectMapper.writeValueAsString(customAttributes);
+			this.metadata = objectMapper.writeValueAsString(metadata);
 		}
 		this.sequenceNumber = sequenceNumber;
 	}
 
 	public void setCustomAttributesAsJson(String attributesJson) {
-		this.customAttributes = attributesJson;
+		this.metadata = attributesJson;
 	}
 
 	public Map<String, Object> getParameters() {
@@ -113,8 +113,8 @@ public class UploadFileRequest extends GCRequest {
 		if (!StringUtils.isNullOrEmpty(this.path)) {
 			parameters.put("path", this.path);
 		}
-		if (!StringUtils.isNullOrEmpty(this.customAttributes)) {
-			parameters.put("custom_attributes", this.customAttributes);
+		if (!StringUtils.isNullOrEmpty(this.metadata)) {
+			parameters.put("metadata", this.metadata);
 		}
 		if (this.sequenceNumber != null && this.sequenceNumber > 0) {
 			parameters.put("sequence_number", this.sequenceNumber);
@@ -189,12 +189,12 @@ public class UploadFileRequest extends GCRequest {
 		this.path = path;
 	}
 
-	public String getCustomAttributes() {
-		return customAttributes;
+	public String getMetadata() {
+		return metadata;
 	}
 
-	public void setCustomAttributes(String customAttributes) {
-		this.customAttributes = customAttributes;
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
 	}
 
 	public Long getSequenceNumber() {

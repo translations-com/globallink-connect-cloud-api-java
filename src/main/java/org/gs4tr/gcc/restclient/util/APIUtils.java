@@ -66,7 +66,7 @@ public class APIUtils {
 					}
 				}
 			}
-			operation.getConfig().getLogger().info("CONNECTOR::::::::" + operation.getConfig().getConnectorKey());
+
 			multipart.addFormField("connector_key", operation.getConfig().getConnectorKey());
 			HttpURLConnection connection = multipart.finish();
 
@@ -142,33 +142,43 @@ public class APIUtils {
 					throw new IllegalStateException(
 							"Connector key is required. You can obtain connector key using 'Connectors' operation");
 				}
-
-				if (operation.getRequestObject() instanceof GCMultiConnectorRequest) {
-					GCMultiConnectorRequest r = (GCMultiConnectorRequest) operation.getRequestObject();
-					if (r.getConnectorIds() == null) {
-						r.setConnectorIds(new ArrayList<String>());
-					}
-					if (!r.getConnectorIds().contains(connectorKey)) {
-						r.getConnectorIds().add(connectorKey);
-					}
-					connectorKey = mapper.writeValueAsString(r.getConnectorIds());
-
-				}
-				if (operation.getRequestObject() instanceof GCMultiConnectorPageableRequest) {
-					GCMultiConnectorPageableRequest r = (GCMultiConnectorPageableRequest) operation.getRequestObject();
-					if (r.getConnectorIds() == null) {
-						r.setConnectorIds(new ArrayList<String>());
-					}
-					if (!r.getConnectorIds().contains(connectorKey)) {
-						r.getConnectorIds().add(connectorKey);
-					}
-					connectorKey = mapper.writeValueAsString(r.getConnectorIds());
-				}
-
+				
+                if (operation.getRequestObject() instanceof GCMultiConnectorRequest)
+                {
+                	GCMultiConnectorRequest r = (GCMultiConnectorRequest)operation.getRequestObject();
+                    if (r.getConnectorIds() == null)
+                    {
+                        r.setConnectorIds(new ArrayList<String>());
+                    }
+                    if (!r.getConnectorIds().contains(connectorKey))
+                    {
+                        r.getConnectorIds().add(connectorKey);
+                    }
+                    connectorKey = mapper.writeValueAsString(r.getConnectorIds());
+                    
+                }
+                if (operation.getRequestObject() instanceof GCMultiConnectorPageableRequest)
+                {
+                	GCMultiConnectorPageableRequest r = (GCMultiConnectorPageableRequest)operation.getRequestObject();
+                	if (r.getConnectorIds() == null)
+                    {
+                        r.setConnectorIds(new ArrayList<String>());
+                    }
+                    if (!r.getConnectorIds().contains(connectorKey))
+                    {
+                        r.getConnectorIds().add(connectorKey);
+                    }
+                    connectorKey = mapper.writeValueAsString(r.getConnectorIds());
+                }
+				
 				connection.setRequestProperty("connector_key", connectorKey);
 			}
-			if (!(operation instanceof Login)) {
-				connection.setRequestProperty("Authorization", "Bearer " + operation.getConfig().getBearerToken());
+			if(!(operation instanceof Login)) {
+				if(StringUtils.IsNullOrWhiteSpace(operation.getConfig().getApiKey())) {
+					connection.setRequestProperty("Authorization", "Bearer " + operation.getConfig().getBearerToken());
+				} else {
+					connection.setRequestProperty("api-key", operation.getConfig().getApiKey());
+				}
 			}
 			connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
 			addHeaders(connection, operation.getConfig().getCustomHeaders());

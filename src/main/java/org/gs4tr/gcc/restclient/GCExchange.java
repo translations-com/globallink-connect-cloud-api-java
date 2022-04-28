@@ -3,6 +3,7 @@ package org.gs4tr.gcc.restclient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import org.gs4tr.gcc.restclient.model.Status;
 import org.gs4tr.gcc.restclient.model.SubmissionWordCountData;
 import org.gs4tr.gcc.restclient.model.WordCount;
 import org.gs4tr.gcc.restclient.model.WordCountSummary;
+import org.gs4tr.gcc.restclient.operation.ConnectorInfoKeys;
+import org.gs4tr.gcc.restclient.operation.ConnectorInfoKeys.ConnectorInfoKeysResponse;
 import org.gs4tr.gcc.restclient.operation.Connectors;
 import org.gs4tr.gcc.restclient.operation.Connectors.ConnectorsResponse;
 import org.gs4tr.gcc.restclient.operation.ConnectorsConfig;
@@ -27,6 +30,10 @@ import org.gs4tr.gcc.restclient.operation.ConnectorsConfig.ConnectorsConfigRespo
 import org.gs4tr.gcc.restclient.operation.ConnectorsConfig.ConnectorsConfigResponseData;
 import org.gs4tr.gcc.restclient.operation.ConnectorsInfo;
 import org.gs4tr.gcc.restclient.operation.ConnectorsInfo.ConnectorsInfoResponse;
+import org.gs4tr.gcc.restclient.operation.ConnectorsInfoGetEntry;
+import org.gs4tr.gcc.restclient.operation.ConnectorsInfoGetEntry.ConnectorsInfoGetEntryKey;
+import org.gs4tr.gcc.restclient.operation.ConnectorsInfoGetEntry.ConnectorsInfoGetEntryResponse;
+import org.gs4tr.gcc.restclient.operation.ConnectorsInfoPut;
 import org.gs4tr.gcc.restclient.operation.ConnectorsLog;
 import org.gs4tr.gcc.restclient.operation.Content;
 import org.gs4tr.gcc.restclient.operation.Content.ContentResponse;
@@ -42,11 +49,14 @@ import org.gs4tr.gcc.restclient.operation.Context.ContextResponse;
 import org.gs4tr.gcc.restclient.operation.ContextConfig;
 import org.gs4tr.gcc.restclient.operation.ContextConfig.ContextConfigResponse;
 import org.gs4tr.gcc.restclient.operation.DataStoreDelete;
+import org.gs4tr.gcc.restclient.operation.DataStoreGet;
+import org.gs4tr.gcc.restclient.operation.DataStoreGet.DataStoreGetResponse;
 import org.gs4tr.gcc.restclient.operation.DataStoreGetEntry;
 import org.gs4tr.gcc.restclient.operation.DataStoreGetEntry.DataStoreGetEntryKey;
 import org.gs4tr.gcc.restclient.operation.DataStoreGetEntry.DataStoreGetEntryResponse;
 import org.gs4tr.gcc.restclient.operation.DataStoreKeys;
 import org.gs4tr.gcc.restclient.operation.DataStoreKeys.DataStoreKeysResponse;
+import org.gs4tr.gcc.restclient.operation.DataStorePost;
 import org.gs4tr.gcc.restclient.operation.DataStorePut;
 import org.gs4tr.gcc.restclient.operation.DownloadDeliverable;
 import org.gs4tr.gcc.restclient.operation.GCOperation;
@@ -131,7 +141,7 @@ public class GCExchange {
 		if (StringUtils.IsNullOrWhiteSpace(conf.getApiUrl())) {
 			throw new IllegalArgumentException("APIUrl is required");
 		}
-		if (StringUtils.IsNullOrWhiteSpace(conf.getBearerToken())) {
+		if (StringUtils.IsNullOrWhiteSpace(conf.getBearerToken()) && StringUtils.IsNullOrWhiteSpace(conf.getApiKey())) {
 			if (StringUtils.IsNullOrWhiteSpace(conf.getUserName())) {
 				throw new IllegalArgumentException("Username is required");
 			}
@@ -141,23 +151,40 @@ public class GCExchange {
 		}
 
 		this.config = conf;
-		this.config = conf;
+		
+		configureSSL(conf.getApiUrl(), conf.getTrustStorePath(), conf.getTrustStorePassword());
+		
 		if (this.config.getApiUrl().indexOf("/v2") > 0) {
 			this.config.setApiUrl(this.config.getApiUrl().substring(0, this.config.getApiUrl().indexOf("/v2")));
 		}
 		if (this.config.getApiUrl().indexOf("/v3") > 0) {
 			this.config.setApiUrl(this.config.getApiUrl().substring(0, this.config.getApiUrl().indexOf("/v3")));
 		}
+		if (this.config.getApiUrl().indexOf("/api") > 0) {
+			this.config.setApiUrl(this.config.getApiUrl().substring(0, this.config.getApiUrl().indexOf("/api")));
+		}
+		if (this.config.getApiUrl().indexOf("/rest-api") > 0) {
+			this.config.setApiUrl(this.config.getApiUrl().substring(0, this.config.getApiUrl().indexOf("/rest-api")));
+		}
 		if (!this.config.getApiUrl().endsWith("/")) {
 			this.config.setApiUrl(this.config.getApiUrl() + "/");
 		}
 
-		if (StringUtils.IsNullOrWhiteSpace(this.config.getBearerToken())) {
+		if (StringUtils.IsNullOrWhiteSpace(this.config.getBearerToken()) && StringUtils.IsNullOrWhiteSpace(conf.getApiKey())) {
 			login();
 		} else {
 			getConnectors();
 		}
 
+	}
+	
+	private void configureSSL(String url, String trustStore, String trustStorePassword) {
+		if (url.startsWith("https") && !(StringUtils.IsNullOrWhiteSpace(trustStore)) 
+			&& !(StringUtils.IsNullOrWhiteSpace(trustStorePassword))) {
+		    System.setProperty("javax.net.ssl.trustStore", trustStore);
+		    System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
+		    this.config.getLogger().info("javax.net.ssl.trustStore is set to  - [" + System.getProperty("javax.net.ssl.trustStore") + "]");
+		}
 	}
 
 	private void login() {
@@ -240,6 +267,38 @@ public class GCExchange {
 		ConnectorsInfoResponse response = (ConnectorsInfoResponse) doRequest(new ConnectorsInfo(config));
 		return response.getResponseData().getConnectorInfoJson();
 	}
+	
+	public String getDataStoreJson() throws JsonParseException, JsonMappingException, IOException {
+		DataStoreGetResponse response = (DataStoreGetResponse) doRequest(new DataStoreGet(config));
+		if (response != null && response.getResponseData() != null && response.getResponseData().getDatastore() != null) {
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.readValue(response.getResponseData().getDatastore(), String.class);
+			
+		} else {
+			return null;
+		}
+	}
+	
+	public MessageResponse updateDataStore(String json) throws JsonParseException, JsonMappingException, IOException {
+		return (MessageResponse) doRequest(new DataStorePost(config, json));
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getDataStoreAsObject(String key, Class<T> clazz)
+			throws JsonParseException, JsonMappingException, IOException {
+		String json = getDataStoreJson();
+		if (json != null) {
+			if (clazz.equals(String.class)) {
+				return (T) json;
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			Object readValue = mapper.readValue(json, clazz);
+			return (T) readValue;
+		}
+
+		return null;
+	}
 
 	public String getDataStoreEntryJson(String key) throws JsonParseException, JsonMappingException, IOException {
 		DataStoreGetEntryResponse response = (DataStoreGetEntryResponse) doRequest(new DataStoreGetEntry(config, key));
@@ -295,10 +354,66 @@ public class GCExchange {
 	}
 
 	public MessageResponse addOrUpdateDataStore(String key, Object data) throws JsonProcessingException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(key, data);
+		MessageResponse response = (MessageResponse) doRequest(
+				new DataStorePut(config, map), false);
+		return response;
+	}
+	
+	public MessageResponse addOrUpdateConnectorInfo(String key, Object data) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		MessageResponse response = (MessageResponse) doRequest(
-				new DataStorePut(config, key, mapper.writeValueAsString(data)), true);
+				new ConnectorsInfoPut(config, key, mapper.writeValueAsString(data)), false);
 		return response;
+	}
+	
+	public List<String> getConnectorInfoKeys() {
+		ConnectorInfoKeysResponse response = (ConnectorInfoKeysResponse) doRequest(new ConnectorInfoKeys(config));
+		return (response != null && response.getResponseData() != null) ? response.getResponseData().getKeys() : null;
+	}
+	
+	public String getConnectorInfoEntryJson(String key) throws JsonParseException, JsonMappingException, IOException {
+		ConnectorsInfoGetEntryResponse response = (ConnectorsInfoGetEntryResponse) doRequest(new ConnectorsInfoGetEntry(config, key));
+		if (response != null && response.getResponseData() != null && response.getResponseData().getConnectorsInfo() != null
+				&& response.getResponseData().getConnectorsInfo().size() > 0) {
+			for (ConnectorsInfoGetEntryKey entry : response.getResponseData().getConnectorsInfo()) {
+				return "" + entry.get(key);
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getConnectorInfoEntryAsList(String key, Class<T> clazz)
+			throws JsonParseException, JsonMappingException, IOException {
+		String json = getConnectorInfoEntryJson(key);
+		if (json != null) {
+			ObjectMapper mapper = new ObjectMapper();
+			JavaType constructType = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
+			Object readValue = mapper.readValue(json, constructType);
+			return (List<T>) readValue;
+		}
+
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getConnectorInfoEntryAsObject(String key, Class<T> clazz)
+			throws JsonParseException, JsonMappingException, IOException {
+		String json = getConnectorInfoEntryJson(key);
+		if (json != null) {
+			if (clazz.equals(String.class)) {
+				return (T) json;
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			Object readValue = mapper.readValue(json, clazz);
+			return (T) readValue;
+		}
+
+		return null;
 	}
 
 	/**

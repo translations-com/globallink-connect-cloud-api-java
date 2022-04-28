@@ -20,6 +20,8 @@ public abstract class GCOperation {
 
 	protected GCConfig config;
 	public static final String DEFAULT_API_VERSION = "v3";
+	public static final String API_V3_PREFIX = "api";
+	public static final String RESTAPI_V3_PREFIX = "rest-api";
 
 	public GCOperation(GCConfig config) {
 		this.setConfig(config);
@@ -30,7 +32,11 @@ public abstract class GCOperation {
 		if (!url.endsWith("/")) {
 			url = url + "/";
 		}
-		return url + DEFAULT_API_VERSION + "/";
+		if(StringUtils.IsNullOrWhiteSpace(this.getConfig().getApiKey())) {
+			return url + API_V3_PREFIX + "/" + DEFAULT_API_VERSION + "/";
+		} else {
+			return url + RESTAPI_V3_PREFIX + "/" + DEFAULT_API_VERSION + "/";
+		}
 	}
 
 	protected abstract String getApiUrl();
@@ -71,12 +77,18 @@ public abstract class GCOperation {
 					}
 					if (first) {
 						first = false;
-
 					} else {
 						query.append("&");
 					}
 					if (entry.getValue() instanceof Collection) {
-						query.append(entry.getKey()).append("=").append(mapper.writeValueAsString(entry.getValue()));
+						if((this instanceof DataStoreGetEntry || this instanceof ConnectorsInfoGetEntry) && !StringUtils.IsNullOrWhiteSpace(this.config.getApiKey())) {
+							Collection<Object> col = (Collection<Object>) entry.getValue();
+							for(Object c : col) {
+								query.append(entry.getKey()).append("=").append(URLEncoder.encode("" + c, "UTF-8")).append("&");
+							}
+						} else {
+							query.append(entry.getKey()).append("=").append(mapper.writeValueAsString(entry.getValue()));
+						}
 					} else {
 						query.append(entry.getKey()).append("=")
 								.append(URLEncoder.encode("" + entry.getValue(), "UTF-8"));

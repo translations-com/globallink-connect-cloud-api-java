@@ -7,14 +7,19 @@ import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
 import org.gs4tr.gcc.restclient.dto.MessageResponse;
 import org.gs4tr.gcc.restclient.request.GCRequest;
+import org.gs4tr.gcc.restclient.util.MapAsPropertiesSerizalizer;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class DataStorePut extends GCOperation {
 
 	private DataStorePutRequest request;
 
-	public DataStorePut(GCConfig config, String key, Object value) {
+	public DataStorePut(GCConfig config, Map<String, Object> keyValues) {
 		super(config);
-		this.request = new DataStorePutRequest(key, value);
+		this.request = new DataStorePutRequest(keyValues, config);
 	}
 
 	private static final String REQUEST_URL = "datastore/key";
@@ -32,25 +37,37 @@ public class DataStorePut extends GCOperation {
 
 	@Override
 	public GCRequest getRequestObject() {
-		return request;
+		return null;
+	}
+	
+	@Override
+	public String getRequestJson() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(request.getKeyValues());
+		} catch (JsonProcessingException e) {
+			throw new IllegalStateException("Error writing json from "+request.getKeyValues(), e);
+		}
 	}
 
 	public static class DataStorePutRequest extends GCRequest {
-		private String key;
-		private Object value;
+		@JsonSerialize(using = MapAsPropertiesSerizalizer.class)
+		private Map<String, Object> keyValues;
 
-		public DataStorePutRequest(String key, Object value) {
-			this.key = key;
-			this.value = value;
+		public DataStorePutRequest(Map<String, Object> keyValues, GCConfig config) {
+			this.keyValues = new HashMap<String, Object>();
+			this.keyValues.putAll(keyValues);
+			this.keyValues.put("connector_key", config.getConnectorKey());
 		}
 
-		@Override
-		public Map<String, Object> getParameters() {
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.putAll(super.getParameters());
-			parameters.put(key, value);
-			return parameters;
+		public Map<String, Object> getKeyValues() {
+			return keyValues;
 		}
+
+		public void setKeyValues(Map<String, Object> keyValues) {
+			this.keyValues = keyValues;
+		}
+		
 	}
 
 	@Override

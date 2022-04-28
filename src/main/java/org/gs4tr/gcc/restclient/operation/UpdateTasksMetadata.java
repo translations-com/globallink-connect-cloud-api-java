@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.gs4tr.gcc.restclient.GCConfig;
 import org.gs4tr.gcc.restclient.dto.GCResponse;
-import org.gs4tr.gcc.restclient.dto.MessageResponse;
 import org.gs4tr.gcc.restclient.model.FailedTask;
 import org.gs4tr.gcc.restclient.request.GCRequest;
 import org.gs4tr.gcc.restclient.request.UpdateTasksMetadataRequest;
@@ -40,7 +39,7 @@ public class UpdateTasksMetadata extends GCOperation {
 
 	@Override
 	public Class<? extends GCResponse> getResponseClass() {
-		return MessageResponse.class;
+		return UpdateTasksMetadataResponse.class;
 	}
 
 	@Override

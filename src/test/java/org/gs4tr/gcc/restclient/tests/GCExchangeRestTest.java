@@ -58,19 +58,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-public class GCExchangeTest {
+public class GCExchangeRestTest {
 	//remove all comments and set connection info
-	private static String username = "username";
-	private static String password = "password";
 	private static String url = "https://connect-qa.translations.com";
 	private static String connector_key = "connector_key";
+	private static String api_key = "api_key";
 
 	private static GCExchange xchange;
 	private static Boolean isConfigured;
 
 	static {
-		if(!"username".equals(username)) {
-			GCConfig config = new GCConfig(url, username, password, connector_key);
+		if(!"api_key".equals(api_key) && !"connector_key".equals(connector_key)) {
+			GCConfig config = new GCConfig(url, api_key);
+			config.setConnectorKey(connector_key);
 			xchange = new GCExchange(config);
 			xchange.getConfig().getLogger().setLevel(Level.ALL);
 			isConfigured = true;
@@ -88,38 +88,15 @@ public class GCExchangeTest {
 				return true;
 			}
 		});
+		
 	}
-
+	
 	@Test
-	public void testInit() {
+	public void testConnectorsRestApi() {
 		if(!isConfigured) {
 			return;
 		}
-		try {
-			new GCExchange(new GCConfig("", username, password));
-			assertTrue(false);
-		} catch (IllegalArgumentException e) {
-			assertTrue(true);
-		}
-		try {
-			new GCExchange(new GCConfig(url, "", password));
-			assertTrue(false);
-		} catch (IllegalArgumentException e) {
-			assertTrue(true);
-		}
-		try {
-			new GCExchange(new GCConfig(url, username, null));
-			assertTrue(false);
-		} catch (IllegalArgumentException e) {
-			assertTrue(true);
-		}
-	}
-
-	@Test
-	public void testConnectors() {
-		if(!isConfigured) {
-			return;
-		}
+		
 		List<Connector> connectors = xchange.getConnectors();
 		assertNotNull(connectors);
 		assertTrue(connectors.size() > 0);
@@ -138,9 +115,9 @@ public class GCExchangeTest {
 		String info = xchange.getConnectorsInfo();
 		xchange.getConfig().getLogger().info(info);
 	}
-	
+
 	@Test
-	public void testDatastore() throws JsonParseException, JsonMappingException, IOException {
+	public void testDatastoreRest() throws JsonParseException, JsonMappingException, IOException {
 		if(!isConfigured) {
 			return;
 		}
@@ -181,7 +158,7 @@ public class GCExchangeTest {
 	}
 	
 	@Test
-	public void testConnectorInfo() throws JsonParseException, JsonMappingException, IOException {
+	public void testConnectorInfoRest() throws JsonParseException, JsonMappingException, IOException {
 		if(!isConfigured) {
 			return;
 		}
@@ -192,7 +169,6 @@ public class GCExchangeTest {
 		String dataStoreEntryJson2 = xchange.getConnectorInfoEntryJson("clientPassword");
 		xchange.getConfig().getLogger().info(dataStoreEntryJson2);
 		
-
 		MessageResponse addOrUpdateDataStore = xchange.addOrUpdateConnectorInfo("testobject",
 				new TestObject("string", true, 11L));
 		xchange.getConfig().getLogger().info(addOrUpdateDataStore.getMessage());
@@ -260,10 +236,11 @@ public class GCExchangeTest {
 	}
 
 	@Test
-	public void testSubmission() {
+	public void testSubmissionRest() {
 		if(!isConfigured) {
 			return;
 		}
+		
 		UploadFileRequest request = new UploadFileRequest("test contents for upload".getBytes(), "sergei_test.xml",
 				"XML");
 		String uuid = UUID.randomUUID().toString();
@@ -357,10 +334,11 @@ public class GCExchangeTest {
 	}
 
 	@Test
-	public void testOther() {
+	public void testOtherRest() {
 		if(!isConfigured) {
 			return;
 		}
+		
 		List<LogEntry> logs = Arrays.asList(new LogEntry("INFO", new Date(), "message1", "origin1"),
 				new LogEntry("INFO", new Date(), "message1", "origin1"));
 		xchange.addLog(logs);
@@ -369,7 +347,6 @@ public class GCExchangeTest {
 		xchange.notify(new NotifyRequest("notify message"));
 
 	}
-	
 
 	private Boolean isNullOrEmpty(String value) {
 		return value == null || value.trim().length() <= 0;

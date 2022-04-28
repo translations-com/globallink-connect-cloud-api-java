@@ -12,6 +12,8 @@ public class GCSubmission extends GCBasicModel {
 	private Status status;
 	@JsonProperty("submitter")
 	private String submitter;
+	@JsonProperty("creator")
+	private String creator;
 	@JsonProperty("created_at")
 	private Date createdAt;
 	@JsonProperty("due_date")
@@ -30,6 +32,8 @@ public class GCSubmission extends GCBasicModel {
 	private Boolean isError;
 	@JsonProperty("is_overdue")
 	private Boolean isOverdue;
+	@JsonProperty("is_redelivery")
+	private Boolean isRedelivery;
 	@JsonProperty("config")
 	private Map<String, Object> config;
 	@JsonProperty("attributes")
@@ -171,6 +175,22 @@ public class GCSubmission extends GCBasicModel {
 
 	public void setConnectorKey(String connectorKey) {
 		this.connectorKey = connectorKey;
+	}
+
+	public Boolean getIsRedelivery() {
+		return isRedelivery;
+	}
+
+	public void setIsRedelivery(Boolean isRedelivery) {
+		this.isRedelivery = isRedelivery;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
 }
